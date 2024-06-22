@@ -166,7 +166,7 @@ theme_override_constants/margin_bottom = 18
 [node name="CenterContainer" type="CenterContainer" parent="Player/Control/MarginContainer/MarginContainer2"]
 layout_mode = 2
 
-[node name="PlayerTag" type="Label" parent="Player/Control/MarginContainer/MarginContainer2/CenterContainer"]
+[node name="Label" type="Label" parent="Player/Control/MarginContainer/MarginContainer2/CenterContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.323575, 0.000218153, 0.00011959, 1)
 theme_override_colors/font_outline_color = Color(0.618933, 7.86438e-07, 2.62221e-07, 1)
