@@ -146,7 +146,7 @@ libraries = {
 texture = ExtResource("4_qcjut")
 hframes = 12
 vframes = 15
-frame = 72
+frame = 12
 region_enabled = true
 region_rect = Rect2(0, 0, 288, 360)
 

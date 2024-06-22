@@ -35,22 +35,24 @@ func nextMove():
 	
 	if Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down") != Vector2.ZERO:
 		if lastInputs["ui_left"] > lastInputs["ui_right"] && lastInputs["ui_left"] > lastInputs["ui_up"] && lastInputs["ui_left"] > lastInputs["ui_down"]:
+			$AnimationPlayer.play("walk_left")
 			targetPos[0] -= 1
-			get_node(".").look_at(self.position - Vector2(1, 0))
 		elif lastInputs["ui_right"] > lastInputs["ui_up"] && lastInputs["ui_right"] > lastInputs["ui_down"]:
+			$AnimationPlayer.play("walk_right")
 			targetPos[0] += 1
-			get_node(".").look_at(self.position + Vector2(1, 0))
 		elif lastInputs["ui_up"] > lastInputs["ui_down"]:
+			$AnimationPlayer.play("walk_up")
 			targetPos[1] -= 1
-			get_node(".").look_at(self.position - Vector2(0, 1))
 		else:
+			$AnimationPlayer.play("walk_down")
 			targetPos[1] += 1
-			get_node(".").look_at(self.position + Vector2(0, 1))
 		
 		var isTargetWalkable = World.get_custom_data_at(Vector2i(targetPos[0], targetPos[1]), "isWalkable")
 		if !isTargetWalkable:
 			World.spawn_plank(Vector2i(targetPos[0], targetPos[1]))
-		
+	
+	else:
+		$AnimationPlayer.stop()
 
 func _process(delta):
 	# Move left/right
