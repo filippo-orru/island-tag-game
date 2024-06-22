@@ -1,13 +1,34 @@
-[gd_scene load_steps=4 format=3 uid="uid://bdlafsg6ckc8h"]
+[gd_scene load_steps=6 format=3 uid="uid://bdlafsg6ckc8h"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_3la1b"]
 [ext_resource type="Texture2D" uid="uid://fof0rbb3joao" path="res://icon.svg" id="1_jkumn"]
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3kkhv"]
+blend_mode = 1
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ebxv2"]
+size = Vector2(128, 128)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mbkpu"]
 
 [node name="World" type="Node2D"]
+position = Vector2(110, 93)
+
+[node name="Island" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Island-Sprite" type="Sprite2D" parent="Island"]
+material = SubResource("CanvasItemMaterial_3kkhv")
+position = Vector2(160, 43)
+texture = ExtResource("1_jkumn")
+
+[node name="Island-Collision" type="CollisionShape2D" parent="Island"]
+position = Vector2(160, 43)
+shape = SubResource("RectangleShape2D_ebxv2")
 
 [node name="Player" type="CharacterBody2D" parent="."]
+collision_mask = 3
 script = ExtResource("1_3la1b")
 
 [node name="Player-Sprite" type="Sprite2D" parent="Player"]
