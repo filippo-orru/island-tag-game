@@ -15,6 +15,8 @@ var controller: PlayerControllStrategy
 func _ready():
 	var playerTag = $Control/MarginContainer/MarginContainer2/CenterContainer/PlayerTag
 	playerTag.text = playerName
+	fromPos = Vector2i(position / GRID_SIZE)
+	targetPos = Vector2i(position / GRID_SIZE)
 
 func _input(event):
 	controller._input(event)
@@ -22,7 +24,7 @@ func _input(event):
 func nextMove():
 	fromPos = targetPos
 	
-	var changeVector = controller.get_target_vector()
+	var changeVector = controller.get_target_vector(position)
 	if not test_move(Transform2D(0, position), changeVector * GRID_SIZE):
 		targetPos = fromPos + changeVector
 	else:
@@ -46,17 +48,15 @@ func nextMove():
 		currentMovementSpeed = DEFAULT_SPEED
 
 func _process(delta):
-	# Move left/right
 	if fromPos.x != targetPos.x:
+		# Move left/right
 		position.x = move_toward(position.x, targetPos.x * GRID_SIZE, delta * currentMovementSpeed)
 		if position.x == targetPos.x * GRID_SIZE:
 			nextMove()
-	
-	# Move top/down
-	if fromPos.y != targetPos.y:
+	elif fromPos.y != targetPos.y:
+		# Move top/down
 		position.y = move_toward(position.y, targetPos.y * GRID_SIZE, delta * currentMovementSpeed)
 		if position.y == targetPos.y * GRID_SIZE:
 			nextMove()
-			
-	if fromPos == targetPos:
+	elif fromPos == targetPos:
 		nextMove()

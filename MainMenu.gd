@@ -96,5 +96,7 @@ func _on_singleplayer_button_pressed():
 	bot1.position = Vector2(32, 32)
 	bot1.playerName = "Bot 1"
 	bot1.get_node("Camera2D").set_enabled(false)
-	bot1.controller = PlayerBotControllStrategy.new()
+	var botController: PlayerBotControllStrategy = PlayerBotControllStrategy.new()
+	botController.targetPlayer = player1
+	bot1.controller = botController
 	%SpawnTarget.add_child(bot1)

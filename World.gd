@@ -7,8 +7,6 @@ const GRID_SIZE = 16
 
 static var _instance: GameWorld = null
 
-var _player_scene = preload("res://player/player.tscn")
-
 func _ready():
 	_instance = self if _instance == null else _instance
 

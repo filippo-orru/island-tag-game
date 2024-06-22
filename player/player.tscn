@@ -102,11 +102,11 @@ _data = {
 
 [node name="Player" type="CharacterBody2D"]
 position = Vector2(2.08165e-12, 2.08165e-12)
-collision_mask = 3
+collision_mask = 2
 script = ExtResource("1_s5i5o")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(4, 4)
+zoom = Vector2(2, 2)
 
 [node name="Player-Collision" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_q8uy0")

@@ -25,7 +25,7 @@ func _input(event):
 		_lastInputs["ui_down"] = 0
 
 
-func get_target_vector() -> Vector2i:
+func get_target_vector(position: Vector2i) -> Vector2i:
 	var target = Vector2i.ZERO
 	
 	if Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down") != Vector2.ZERO:
