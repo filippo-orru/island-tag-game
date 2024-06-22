@@ -49,7 +49,7 @@ func nextMove():
 			$AnimationPlayer.play("walk_down")
 			targetPos[1] += 1
 		
-		var isTargetWalkable = World.get_custom_data_at(Vector2i(targetPos[0], targetPos[1]), "isWalkable")
+		var isTargetWalkable = World.isWalkable(Vector2i(targetPos[0], targetPos[1]))
 		if !isTargetWalkable:
 			World.spawn_plank(Vector2i(targetPos[0], targetPos[1]))
 			currentMovementSpeed = PLANK_SPAWN_SPEED
