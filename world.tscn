@@ -1,6 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://bdlafsg6ckc8h"]
+[gd_scene load_steps=16 format=3 uid="uid://bdlafsg6ckc8h"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_3la1b"]
+[ext_resource type="Script" path="res://World.gd" id="1_3v4c7"]
 [ext_resource type="Script" path="res://Water.gd" id="1_bmu76"]
 [ext_resource type="TileSet" uid="uid://cghj6ibwynj3u" path="res://map.tres" id="1_e2slv"]
 [ext_resource type="Texture2D" uid="uid://fof0rbb3joao" path="res://icon.svg" id="1_jkumn"]
@@ -109,6 +110,7 @@ _data = {
 }
 
 [node name="World" type="Node2D"]
+script = ExtResource("1_3v4c7")
 
 [node name="Block" type="Area2D" parent="."]
 collision_layer = 2
