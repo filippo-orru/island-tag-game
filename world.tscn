@@ -1,114 +1,16 @@
-[gd_scene load_steps=17 format=3 uid="uid://bdlafsg6ckc8h"]
+[gd_scene load_steps=8 format=3 uid="uid://bdlafsg6ckc8h"]
 
-[ext_resource type="Script" path="res://Player.gd" id="1_3la1b"]
 [ext_resource type="Script" path="res://World.gd" id="1_3v4c7"]
 [ext_resource type="Script" path="res://Water.gd" id="1_bmu76"]
 [ext_resource type="TileSet" uid="uid://81ugtyb0pa7t" path="res://map.tres" id="1_e2slv"]
 [ext_resource type="Texture2D" uid="uid://fof0rbb3joao" path="res://icon.svg" id="1_jkumn"]
-[ext_resource type="Texture2D" uid="uid://qvydmlsewx82" path="res://assets/characters/character.png" id="4_qcjut"]
-[ext_resource type="Texture2D" uid="uid://c40qpge85d4v3" path="res://assets/tilemaps/ground.png" id="6_ild76"]
+[ext_resource type="PackedScene" uid="uid://c4ll6sfrlstyu" path="res://player.tscn" id="5_b60ij"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3kkhv"]
 blend_mode = 1
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ebxv2"]
 size = Vector2(128, 128)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_mbkpu"]
-size = Vector2(16, 16)
-
-[sub_resource type="Animation" id="Animation_fjsu6"]
-resource_name = "idle"
-length = 0.8
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.8),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0, 11]
-}
-
-[sub_resource type="Animation" id="Animation_jr8gt"]
-resource_name = "walk_left"
-length = 0.8
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.8),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [36, 47]
-}
-
-[sub_resource type="Animation" id="Animation_5ai6r"]
-resource_name = "walk_right"
-length = 0.8
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.8),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [24, 35]
-}
-
-[sub_resource type="Animation" id="Animation_mhvyb"]
-resource_name = "walk_right_start"
-length = 0.4
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [72, 76, 72]
-}
-
-[sub_resource type="Animation" id="Animation_ng33g"]
-resource_name = "walk_up"
-length = 0.8
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.8),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [12, 23]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_mtqx1"]
-_data = {
-"walk_down": SubResource("Animation_fjsu6"),
-"walk_left": SubResource("Animation_jr8gt"),
-"walk_right": SubResource("Animation_5ai6r"),
-"walk_right_start": SubResource("Animation_mhvyb"),
-"walk_up": SubResource("Animation_ng33g")
-}
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_3v4c7")
@@ -126,81 +28,6 @@ texture = ExtResource("1_jkumn")
 [node name="Block-Collision" type="CollisionShape2D" parent="Block"]
 position = Vector2(160, 43)
 shape = SubResource("RectangleShape2D_ebxv2")
-
-[node name="Player" type="CharacterBody2D" parent="."]
-position = Vector2(2.08165e-12, 2.08165e-12)
-collision_mask = 3
-script = ExtResource("1_3la1b")
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-zoom = Vector2(4, 4)
-
-[node name="Player-Collision" type="CollisionShape2D" parent="Player"]
-shape = SubResource("RectangleShape2D_mbkpu")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Player"]
-libraries = {
-"": SubResource("AnimationLibrary_mtqx1")
-}
-
-[node name="Sprite" type="Sprite2D" parent="Player"]
-texture = ExtResource("4_qcjut")
-hframes = 12
-vframes = 15
-region_enabled = true
-region_rect = Rect2(0, 0, 288, 360)
-
-[node name="Control" type="Control" parent="Player"]
-layout_mode = 3
-anchors_preset = 0
-offset_top = -10.0
-offset_bottom = -10.0
-scale = Vector2(0.1, 0.1)
-
-[node name="MarginContainer" type="MarginContainer" parent="Player/Control"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -135.0
-offset_top = -106.0
-offset_right = 135.0
-grow_horizontal = 2
-grow_vertical = 0
-
-[node name="NinePatchRect" type="NinePatchRect" parent="Player/Control/MarginContainer"]
-layout_mode = 2
-texture = ExtResource("6_ild76")
-region_rect = Rect2(0, 272, 48, 48)
-patch_margin_left = 16
-patch_margin_top = 16
-patch_margin_right = 16
-patch_margin_bottom = 16
-axis_stretch_horizontal = 2
-axis_stretch_vertical = 2
-
-[node name="MarginContainer2" type="MarginContainer" parent="Player/Control/MarginContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 28
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 28
-theme_override_constants/margin_bottom = 18
-
-[node name="CenterContainer" type="CenterContainer" parent="Player/Control/MarginContainer/MarginContainer2"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Player/Control/MarginContainer/MarginContainer2/CenterContainer"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.323575, 0.000218153, 0.00011959, 1)
-theme_override_colors/font_outline_color = Color(0.618933, 7.86438e-07, 2.62221e-07, 1)
-theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 62
-text = "Player 1"
-horizontal_alignment = 1
-vertical_alignment = 1
-max_lines_visible = 1
 
 [node name="Map" type="Node2D" parent="."]
 position = Vector2(-8, -8)
@@ -224,5 +51,7 @@ layer_1/tile_data = PackedInt32Array(131067, 2621440, 11, 262140, 2555904, 10, 3
 layer_2/name = "Plank"
 layer_2/z_index = -1
 layer_2/tile_data = PackedInt32Array()
+
+[node name="Player" parent="." instance=ExtResource("5_b60ij")]
 
 [connection signal="body_entered" from="Block" to="Block" method="_on_body_entered"]
