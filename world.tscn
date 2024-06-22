@@ -1,10 +1,9 @@
-[gd_scene load_steps=16 format=3 uid="uid://bdlafsg6ckc8h"]
+[gd_scene load_steps=15 format=3 uid="uid://bdlafsg6ckc8h"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_3la1b"]
 [ext_resource type="Script" path="res://Water.gd" id="1_bmu76"]
-[ext_resource type="TileSet" uid="uid://81ugtyb0pa7t" path="res://map.tres" id="1_e2slv"]
+[ext_resource type="TileSet" uid="uid://cghj6ibwynj3u" path="res://map.tres" id="1_e2slv"]
 [ext_resource type="Texture2D" uid="uid://fof0rbb3joao" path="res://icon.svg" id="1_jkumn"]
-[ext_resource type="Script" path="res://World.gd" id="1_rcndy"]
 [ext_resource type="Texture2D" uid="uid://qvydmlsewx82" path="res://assets/characters/character.png" id="4_qcjut"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3kkhv"]
@@ -33,23 +32,6 @@ tracks/0/keys = {
 "values": [0, 11]
 }
 
-[sub_resource type="Animation" id="Animation_jr8gt"]
-resource_name = "walk_left"
-length = 0.8
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.8),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [36, 47]
-}
-
 [sub_resource type="Animation" id="Animation_5ai6r"]
 resource_name = "walk_right"
 length = 0.8
@@ -65,23 +47,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [24, 35]
-}
-
-[sub_resource type="Animation" id="Animation_mhvyb"]
-resource_name = "walk_right_start"
-length = 0.2
-loop_mode = 2
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [72, 76]
 }
 
 [sub_resource type="Animation" id="Animation_ng33g"]
@@ -101,6 +66,39 @@ tracks/0/keys = {
 "values": [12, 23]
 }
 
+[sub_resource type="Animation" id="Animation_jr8gt"]
+resource_name = "walk_left"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [36, 47]
+}
+
+[sub_resource type="Animation" id="Animation_mhvyb"]
+resource_name = "walk_right_start"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [72, 76, 72]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mtqx1"]
 _data = {
 "walk_down": SubResource("Animation_fjsu6"),
@@ -111,7 +109,6 @@ _data = {
 }
 
 [node name="World" type="Node2D"]
-script = ExtResource("1_rcndy")
 
 [node name="Block" type="Area2D" parent="."]
 collision_layer = 2
@@ -147,7 +144,7 @@ libraries = {
 texture = ExtResource("4_qcjut")
 hframes = 12
 vframes = 15
-frame = 74
+frame = 72
 region_enabled = true
 region_rect = Rect2(0, 0, 288, 360)
 
@@ -155,7 +152,6 @@ region_rect = Rect2(0, 0, 288, 360)
 position = Vector2(-8, -8)
 
 [node name="WaterBackground" type="TileMap" parent="Map"]
-visible = false
 position = Vector2(-32, -16)
 tile_set = ExtResource("1_e2slv")
 format = 2
@@ -165,13 +161,9 @@ layer_0/tile_data = PackedInt32Array(-917514, 2752512, 11, -851978, 2752512, 11,
 [node name="Island" type="TileMap" parent="Map"]
 tile_set = ExtResource("1_e2slv")
 format = 2
-layer_0/name = "Island"
 layer_0/z_index = -1
-layer_0/tile_data = PackedInt32Array(196604, 3997696, 18, 131068, 3997696, 18, 131069, 3997696, 18, 65533, 3997696, 18, -3, 3997696, 18, -4, 2424832, 18, 65532, 2424832, 18, -65540, 2424832, 18, -131076, 2424832, 18, -131075, 3997696, 18, -131074, 3997696, 18, -131073, 3997696, 18, -196608, 2424832, 18, -131072, 3997696, 18, -131071, 2424832, 18, -131070, 2424832, 18, -131069, 2424832, 18, -65533, 3997696, 18, -65532, 2424832, 18, 4, 2424832, 18, 65540, 2424832, 18, 65539, 3997696, 18, 131075, 2424832, 18, 131074, 3997696, 18, 131073, 3997696, 18, 131072, 3997696, 18, 196610, 2424832, 18, 196609, 2424832, 18, 196608, 2424832, 18, 262143, 3997696, 18, 327679, 2424832, 18, 327678, 2424832, 18, 262142, 3997696, 18, 262141, 2424832, 18, 196605, 3997696, 18, 262140, 2424832, 18, 196603, 2424832, 18, 131067, 2424832, 18, -65541, 2424832, 18, -196611, 2424832, 18, -196610, 2424832, 18, -196609, 2424832, 18, -131077, 2424832, 18, -196612, 2424832, 18, -262144, 2424832, 18, -196607, 2424832, 18, -131068, 2424832, 18, 131076, 2424832, 18, 196611, 2424832, 18, 262144, 2424832, 18, 327677, 2424832, 18, 262139, 2424832, 18, 65531, 2424832, 18, -5, 2424832, 18, -65539, 3997696, 18, -65538, 3997696, 18, -65537, 3997696, 18, -2, 3997696, 18, -1, 3604480, 18, -65536, 3997696, 18, -65535, 3997696, 18, -65534, 3997696, 18, 2, 3997696, 18, 3, 3997696, 18, 1, 3997696, 18, 65537, 3997696, 18, 65538, 3997696, 18, 0, 3997696, 18, 65535, 3997696, 18, 65534, 3997696, 18, 131070, 3997696, 18, 196606, 3997696, 18, 196607, 3997696, 18, 65536, 3997696, 18, 131071, 3997696, 18)
-layer_1/name = "Coastline"
+layer_0/tile_data = PackedInt32Array(196604, 2424832, 18, 131068, 2424832, 18, 131069, 2424832, 18, 65533, 2424832, 18, -3, 2424832, 18, -4, 2424832, 18, 65532, 2424832, 18, -65540, 2424832, 18, -131076, 2424832, 18, -131075, 2424832, 18, -131074, 2424832, 18, -131073, 2424832, 18, -196608, 2424832, 18, -131072, 2424832, 18, -131071, 2424832, 18, -131070, 2424832, 18, -131069, 2424832, 18, -65533, 2424832, 18, -65532, 2424832, 18, 4, 2424832, 18, 65540, 2424832, 18, 65539, 2424832, 18, 131075, 2424832, 18, 131074, 2424832, 18, 131073, 2424832, 18, 131072, 2424832, 18, 196610, 2424832, 18, 196609, 2424832, 18, 196608, 2424832, 18, 262143, 2424832, 18, 327679, 2424832, 18, 327678, 2424832, 18, 262142, 2424832, 18, 262141, 2424832, 18, 196605, 2424832, 18, 262140, 2424832, 18, 196603, 2424832, 18, 131067, 2424832, 18, -65541, 2424832, 18, -196611, 2424832, 18, -196610, 2424832, 18, -196609, 2424832, 18, -131077, 2424832, 18, -196612, 2424832, 18, -262144, 2424832, 18, -196607, 2424832, 18, -131068, 2424832, 18, 131076, 2424832, 18, 196611, 2424832, 18, 262144, 2424832, 18, 327677, 2424832, 18, 262139, 2424832, 18, 65531, 2424832, 18, -5, 2424832, 18, -65539, 2424832, 18, -65538, 2424832, 18, -65537, 2424832, 18, -2, 3604480, 18, -1, 3604480, 18, -65536, 3932160, 20, -65535, 3997696, 20, -65534, 2424832, 18, 2, 2424832, 18, 3, 2424832, 18, 1, 3997696, 21, 65537, 3604480, 18, 65538, 2424832, 18, 0, 3932160, 21, 65535, 3997696, 20, 65534, 3932160, 20, 131070, 3932160, 21, 196606, 2424832, 18, 196607, 2424832, 18, 65536, 3604480, 18, 131071, 3997696, 21)
 layer_1/z_index = -1
 layer_1/tile_data = PackedInt32Array(131067, 2621440, 11, 262140, 2555904, 10, 327678, 2555904, 10, 327679, 2555904, 10, 196609, 2555904, 10, 196610, 2555904, 10, 262144, 2555904, 14, 196608, 2490368, 10, 131075, 2490368, 10, 131076, 2555904, 14, 196611, 2555904, 14, 327677, 2490368, 14, 262141, 2621440, 10, 262139, 2490368, 14, 196603, 2621440, 11, 65532, 2621440, 12, -4, 2621440, 10, -5, 2490368, 14, 65531, 2490368, 13, -65541, 2621440, 11, -131076, 2621440, 12, -196611, 2555904, 12, -196610, 2555904, 12, -196609, 2555904, 12, -196612, 2490368, 13, -131077, 2490368, 13, -196608, 2490368, 12, -131071, 2490368, 12, 65540, 2490368, 11, 4, 2490368, 11, -131070, 2555904, 12, -131069, 2555904, 12, -65532, 2490368, 11, -131068, 2555904, 13, -196607, 2555904, 13, -262144, 2555904, 13, 196602, 2818048, 11, 131066, 2818048, 11, 65530, 2818048, 11, -6, 2818048, 11, -65542, 2818048, 11, 65541, 2686976, 11, 5, 2686976, 11, -65531, 2686976, 11, -196606, 2686976, 12, -262143, 2686976, 12, 327676, 2818048, 10, -196613, 2818048, 12, -262148, 2752512, 12, -262147, 2752512, 12, -262146, 2752512, 12, -262145, 2752512, 12, -327680, 2752512, 12, -262149, 2686976, 13, -327679, 2752512, 13, -262142, 2752512, 13, -196603, 2752512, 13, 393212, 2686976, 14, 327675, 2752512, 10, 327674, 2686976, 14, 196613, 2752512, 14, 262148, 2752512, 14, 327681, 2752512, 14, 393213, 2752512, 10, 393214, 2752512, 10, 393215, 2752512, 10, 327680, 2752512, 10, 262146, 2752512, 10, 262147, 2752512, 10, 262138, 2818048, 11, -131078, 2818048, 11, -196614, 2686976, 13, -196605, 2752512, 12, -196604, 2752512, 12, -131067, 2686976, 11, 131077, 2686976, 11, 196612, 2686976, 10, 262145, 2686976, 10)
-layer_2/name = "Plank"
-layer_2/tile_data = PackedInt32Array()
 
 [connection signal="body_entered" from="Block" to="Block" method="_on_body_entered"]
