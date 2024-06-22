@@ -16,8 +16,13 @@ func _ready():
 	
 	var player: Player = _player_scene.instantiate()
 	player.position = Vector2(0, 0)
-	player.playerName = "Player 1"
-	player.controller = PlayerKeyboardControllStrategy.new()
+	if is_multiplayer_authority():
+		player.playerName = "Me"
+		player.controller = PlayerKeyboardControllStrategy.new()
+	
+	else:
+		player.playerName = "Player 2"
+		player.controller = PlayerKeyboardControllStrategy.new()
 	add_child(player)
 	
 	var bot1: Player = _player_scene.instantiate()

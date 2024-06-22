@@ -40,15 +40,22 @@ func load_game():
 
 @rpc("any_peer", "call_local") # Add "call_local" if you also want to spawn a player from the server
 func add_player(id):
-	var player_instance = player.instantiate()
-	player_instance.name = str(id)
+	var player = player.instantiate()
+	player.name = str(id)
 	
-	player_instance.position = Vector2(0, 0)
-	player_instance.playerName = "Player 1"
-	player_instance.controller = PlayerKeyboardControllStrategy.new() # TODO fixme for network
+	player.position = Vector2(0, 0) # TODO based on ID
 	
+	if is_multiplayer_authority():
+		player.playerName = "Me"
+		player.controller = PlayerKeyboardControllStrategy.new()
 	
-	%SpawnTarget.add_child(player_instance)
+	else:
+		player.playerName = "Player 2"
+		player.get_node("Camera2D").set_enabled(false)
+		player.controller = PlayerKeyboardControllStrategy.new() # TODO fixme
+
+	
+	%SpawnTarget.add_child(player)
 
 @rpc("any_peer")
 func remove_player(id):
