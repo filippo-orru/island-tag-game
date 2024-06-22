@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" path="res://World.gd" id="1_3v4c7"]
 [ext_resource type="Script" path="res://Water.gd" id="1_bmu76"]
-[ext_resource type="TileSet" uid="uid://81ugtyb0pa7t" path="res://map.tres" id="1_e2slv"]
+[ext_resource type="TileSet" uid="uid://cghj6ibwynj3u" path="res://map.tres" id="1_e2slv"]
 [ext_resource type="Texture2D" uid="uid://fof0rbb3joao" path="res://icon.svg" id="1_jkumn"]
-[ext_resource type="PackedScene" path="res://player.tscn" id="5_b60ij"]
+[ext_resource type="PackedScene" uid="uid://c4ll6sfrlstyu" path="res://player.tscn" id="5_b60ij"]
 [ext_resource type="Script" path="res://WaterBackground.gd" id="5_uph1g"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3kkhv"]

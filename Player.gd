@@ -8,9 +8,19 @@ var fromPos = Vector2i(0, 0)
 var targetPos = Vector2i(0, 0)
 var currentMovementSpeed = 0.0
 
+var playerName = "Player 123"
+var controllable = true # false for bots or other players via multiplayer network
+
 var lastInputs = {"ui_left": 0, "ui_right": 0, "ui_up": 0, "ui_down": 0}
 
+func _ready():
+	var playerTag = $Control/MarginContainer/MarginContainer2/CenterContainer/PlayerTag
+	playerTag.text = playerName
+
 func _input(event):
+	if !controllable:
+		return
+		
 	if event.is_action_pressed("ui_left"):
 		lastInputs["ui_left"] = Time.get_ticks_msec()
 	elif event.is_action_released("ui_left"):
@@ -34,7 +44,7 @@ func _input(event):
 func nextMove():
 	fromPos = targetPos
 	
-	if Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down") != Vector2.ZERO:
+	if controllable && Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down") != Vector2.ZERO:
 		if lastInputs["ui_left"] > lastInputs["ui_right"] && lastInputs["ui_left"] > lastInputs["ui_up"] && lastInputs["ui_left"] > lastInputs["ui_down"]:
 			$AnimationPlayer.play("walk_left")
 			targetPos.x -= 1
