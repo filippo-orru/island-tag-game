@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 const DEFAULT_SPEED = 200.0
 const PLANK_SPAWN_SPEED = 100.0
-const GRID_SIZE = 16
+const GRID_SIZE = GameWorld.GRID_SIZE
 
 var fromPos = Vector2i(0, 0)
 var targetPos = Vector2i(0, 0)
@@ -48,9 +48,9 @@ func nextMove():
 			$AnimationPlayer.play("walk_down")
 			targetPos.y += 1
 		
-		var isTargetWalkable = World.isWalkable(targetPos)
+		var isTargetWalkable = GameWorld.isWalkable(targetPos)
 		if !isTargetWalkable:
-			World.spawn_plank(fromPos, targetPos)
+			GameWorld.spawn_plank(fromPos, targetPos)
 			currentMovementSpeed = PLANK_SPAWN_SPEED
 		else:
 			currentMovementSpeed = DEFAULT_SPEED

@@ -1,9 +1,11 @@
 extends Node2D
-class_name World
+class_name GameWorld
+
+const GRID_SIZE = 16
 
 @onready var tile_map: TileMap = $Map/Island
 
-static var _instance: World = null
+static var _instance: GameWorld = null
 
 func _ready():
 	_instance = self if _instance == null else _instance
