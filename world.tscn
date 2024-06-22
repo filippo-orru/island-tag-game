@@ -16,17 +16,17 @@ size = Vector2(16, 16)
 
 [node name="World" type="Node2D"]
 
-[node name="Water" type="Area2D" parent="."]
+[node name="Block" type="Area2D" parent="."]
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_bmu76")
 
-[node name="Water-Sprite" type="Sprite2D" parent="Water"]
+[node name="Block-Sprite" type="Sprite2D" parent="Block"]
 material = SubResource("CanvasItemMaterial_3kkhv")
 position = Vector2(160, 43)
 texture = ExtResource("1_jkumn")
 
-[node name="Water-Collision" type="CollisionShape2D" parent="Water"]
+[node name="Block-Collision" type="CollisionShape2D" parent="Block"]
 position = Vector2(160, 43)
 shape = SubResource("RectangleShape2D_ebxv2")
 
@@ -64,4 +64,4 @@ layer_0/tile_data = PackedInt32Array(196604, 2424832, 18, 131068, 2424832, 18, 1
 layer_1/z_index = -1
 layer_1/tile_data = PackedInt32Array(131067, 2621440, 11, 262140, 2555904, 10, 327678, 2555904, 10, 327679, 2555904, 10, 196609, 2555904, 10, 196610, 2555904, 10, 262144, 2555904, 14, 196608, 2490368, 10, 131075, 2490368, 10, 131076, 2555904, 14, 196611, 2555904, 14, 327677, 2490368, 14, 262141, 2621440, 10, 262139, 2490368, 14, 196603, 2621440, 11, 65532, 2621440, 12, -4, 2621440, 10, -5, 2490368, 14, 65531, 2490368, 13, -65541, 2621440, 11, -131076, 2621440, 12, -196611, 2555904, 12, -196610, 2555904, 12, -196609, 2555904, 12, -196612, 2490368, 13, -131077, 2490368, 13, -196608, 2490368, 12, -131071, 2490368, 12, 65540, 2490368, 11, 4, 2490368, 11, -131070, 2555904, 12, -131069, 2555904, 12, -65532, 2490368, 11, -131068, 2555904, 13, -196607, 2555904, 13, -262144, 2555904, 13)
 
-[connection signal="body_entered" from="Water" to="Water" method="_on_body_entered"]
+[connection signal="body_entered" from="Block" to="Block" method="_on_body_entered"]
