@@ -23,7 +23,10 @@ func nextMove():
 	fromPos = targetPos
 	
 	var changeVector = controller.get_target_vector()
-	targetPos = fromPos + changeVector
+	if not test_move(Transform2D(0, position), changeVector * GRID_SIZE):
+		targetPos = fromPos + changeVector
+	else:
+		changeVector = Vector2i.ZERO
 	
 	if changeVector.x < 0:
 		$AnimationPlayer.play("walk_left")
@@ -36,7 +39,7 @@ func nextMove():
 	else:
 		$AnimationPlayer.stop()
 	
-	if !GameWorld.isWalkable(targetPos):
+	if not GameWorld.isWalkable(targetPos):
 		GameWorld.spawn_plank(fromPos, targetPos)
 		currentMovementSpeed = PLANK_SPAWN_SPEED
 	else:
