@@ -3951,6 +3951,7 @@ texture = ExtResource("3_ctbwt")
 19:8/0 = 0
 20:8/0 = 0
 22:8/0 = 0
+22:8/0/custom_data_0 = true
 23:8/0 = 0
 23:8/0/custom_data_0 = true
 24:8/0 = 0

@@ -43,7 +43,7 @@ const TILESET_TILES_PATHS_AND_OBJECTS = 3
 
 const TILESET_PLANK_HORIZONTAL_COORDS = Vector2i(23, 8)
 const TILESET_PLANK_VERTICAL_COORDS = Vector2i(22, 7)
-const TILESET_PLANK_JOINT_COORDS = Vector2i(22, 9)
+const TILESET_PLANK_JOINT_COORDS = Vector2i(22, 8)
 
 static func spawn_plank(coming_from: Vector2i, position: Vector2i) -> void:
 	var plankType
