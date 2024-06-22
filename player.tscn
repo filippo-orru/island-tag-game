@@ -108,7 +108,12 @@ collision_mask = 3
 script = ExtResource("1_o0g4i")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2(-2.08165e-12, -2.08165e-12)
 zoom = Vector2(4, 4)
+limit_left = -820
+limit_top = -630
+limit_right = 820
+limit_bottom = 630
 
 [node name="Player-Collision" type="CollisionShape2D" parent="Player"]
 shape = SubResource("RectangleShape2D_q8uy0")
