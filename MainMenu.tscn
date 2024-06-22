@@ -44,6 +44,8 @@ text = "Join Game"
 [node name="SpawnTarget" type="Node2D" parent="."]
 unique_name_in_owner = true
 
+[node name="SpawnTarget" type="Node2D" parent="SpawnTarget"]
+
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://player/player.tscn")
 spawn_path = NodePath("../SpawnTarget")

@@ -41,18 +41,19 @@ func load_game():
 @rpc("any_peer", "call_local") # Add "call_local" if you also want to spawn a player from the server
 func add_player(id):
 	var player = player.instantiate()
-	player.name = str(id)
+	player.set_multiplayer_authority(id)
 	
 	player.position = Vector2(0, 0) # TODO based on ID
+	print(get_tree())
 	
-	if is_multiplayer_authority():
+	if id == multiplayer.get_unique_id():
 		player.playerName = "Me"
 		player.controller = PlayerKeyboardControllStrategy.new()
 	
 	else:
 		player.playerName = "Player 2"
 		player.get_node("Camera2D").set_enabled(false)
-		player.controller = PlayerKeyboardControllStrategy.new() # TODO fixme
+		player.controller = PlayerRemoteControllStrategy.new()
 
 	
 	%SpawnTarget.add_child(player)
