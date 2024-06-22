@@ -50,10 +50,7 @@ func nextMove():
 		
 		var isTargetWalkable = World.isWalkable(targetPos)
 		if !isTargetWalkable:
-			World.spawn_plank(
-				Vector2i(fromPos, fromPos),
-				Vector2i(targetPos, targetPos)
-			)
+			World.spawn_plank(fromPos, targetPos)
 			currentMovementSpeed = PLANK_SPAWN_SPEED
 		else:
 			currentMovementSpeed = DEFAULT_SPEED
