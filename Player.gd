@@ -46,6 +46,11 @@ func nextMove():
 		else:
 			targetPos[1] += 1
 			get_node(".").look_at(self.position + Vector2(0, 1))
+		
+		var isTargetWalkable = World.get_custom_data_at(Vector2i(targetPos[0], targetPos[1]), "isWalkable")
+		if !isTargetWalkable:
+			World.spawn_plank(Vector2i(targetPos[0], targetPos[1]))
+		
 
 func _process(delta):
 	# Move left/right
