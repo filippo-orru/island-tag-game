@@ -7,9 +7,16 @@ const GRID_SIZE = 16
 
 static var _instance: GameWorld = null
 
+var _player_scene = preload("res://player.tscn")
+
 func _ready():
 	_instance = self if _instance == null else _instance
 
+	var player = _player_scene.instantiate()
+	player.position = Vector2(40, 40)
+	player.get_child(0).playerName = "Bot 1"
+	player.get_child(0).controllable = false
+	add_child(player)
 
 static func get_tile_data_at(layer: int, position: Vector2i) -> TileData:
 	return _instance.tile_map.get_cell_tile_data(layer, position)
