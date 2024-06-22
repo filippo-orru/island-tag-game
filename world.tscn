@@ -1,10 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://bdlafsg6ckc8h"]
+[gd_scene load_steps=15 format=3 uid="uid://bdlafsg6ckc8h"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_3la1b"]
 [ext_resource type="Script" path="res://Water.gd" id="1_bmu76"]
 [ext_resource type="TileSet" uid="uid://cghj6ibwynj3u" path="res://map.tres" id="1_e2slv"]
 [ext_resource type="Texture2D" uid="uid://fof0rbb3joao" path="res://icon.svg" id="1_jkumn"]
-[ext_resource type="Texture2D" uid="uid://df2n5brlaifll" path="res://assets/characters/Old hero.png" id="4_f3rj6"]
+[ext_resource type="Texture2D" uid="uid://qvydmlsewx82" path="res://assets/characters/character.png" id="4_qcjut"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3kkhv"]
 blend_mode = 1
@@ -17,23 +17,96 @@ size = Vector2(16, 16)
 
 [sub_resource type="Animation" id="Animation_fjsu6"]
 resource_name = "idle"
-step = 1.0
+length = 0.8
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.0300001),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 11]
+}
+
+[sub_resource type="Animation" id="Animation_5ai6r"]
+resource_name = "walk_right"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [24, 35]
+}
+
+[sub_resource type="Animation" id="Animation_ng33g"]
+resource_name = "walk_up"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [12, 23]
+}
+
+[sub_resource type="Animation" id="Animation_jr8gt"]
+resource_name = "walk_left"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [36, 47]
+}
+
+[sub_resource type="Animation" id="Animation_mhvyb"]
+resource_name = "walk_right_start"
+length = 0.2
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [72, 76]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mtqx1"]
 _data = {
-"idle": SubResource("Animation_fjsu6")
+"walk_down": SubResource("Animation_fjsu6"),
+"walk_left": SubResource("Animation_jr8gt"),
+"walk_right": SubResource("Animation_5ai6r"),
+"walk_right_start": SubResource("Animation_mhvyb"),
+"walk_up": SubResource("Animation_ng33g")
 }
 
 [node name="World" type="Node2D"]
@@ -60,11 +133,6 @@ script = ExtResource("1_3la1b")
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(4, 4)
 
-[node name="Player-Sprite" type="Sprite2D" parent="Player"]
-position = Vector2(4.76837e-07, 4.76837e-07)
-scale = Vector2(0.125, 0.125)
-texture = ExtResource("1_jkumn")
-
 [node name="Player-Collision" type="CollisionShape2D" parent="Player"]
 shape = SubResource("RectangleShape2D_mbkpu")
 
@@ -73,12 +141,13 @@ libraries = {
 "": SubResource("AnimationLibrary_mtqx1")
 }
 
-[node name="Sprite2D" type="Sprite2D" parent="Player"]
-texture = ExtResource("4_f3rj6")
-hframes = 6
-vframes = 5
+[node name="Sprite" type="Sprite2D" parent="Player"]
+texture = ExtResource("4_qcjut")
+hframes = 12
+vframes = 15
+frame = 74
 region_enabled = true
-region_rect = Rect2(16, 16, 98, 82)
+region_rect = Rect2(0, 0, 288, 360)
 
 [node name="Map" type="Node2D" parent="."]
 position = Vector2(-8, -8)
