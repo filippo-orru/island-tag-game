@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://bdlafsg6ckc8h"]
+[gd_scene load_steps=7 format=3 uid="uid://bdlafsg6ckc8h"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_3la1b"]
+[ext_resource type="Script" path="res://Water.gd" id="1_bmu76"]
 [ext_resource type="Texture2D" uid="uid://fof0rbb3joao" path="res://icon.svg" id="1_jkumn"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3kkhv"]
@@ -14,16 +15,17 @@ size = Vector2(128, 128)
 [node name="World" type="Node2D"]
 position = Vector2(110, 93)
 
-[node name="Island" type="StaticBody2D" parent="."]
+[node name="Water" type="Area2D" parent="."]
 collision_layer = 2
-collision_mask = 0
+collision_mask = 3
+script = ExtResource("1_bmu76")
 
-[node name="Island-Sprite" type="Sprite2D" parent="Island"]
+[node name="Water-Sprite" type="Sprite2D" parent="Water"]
 material = SubResource("CanvasItemMaterial_3kkhv")
 position = Vector2(160, 43)
 texture = ExtResource("1_jkumn")
 
-[node name="Island-Collision" type="CollisionShape2D" parent="Island"]
+[node name="Water-Collision" type="CollisionShape2D" parent="Water"]
 position = Vector2(160, 43)
 shape = SubResource("RectangleShape2D_ebxv2")
 
@@ -38,3 +40,5 @@ texture = ExtResource("1_jkumn")
 
 [node name="Player-Collision" type="CollisionShape2D" parent="Player"]
 shape = SubResource("RectangleShape2D_mbkpu")
+
+[connection signal="body_entered" from="Water" to="Water" method="_on_body_entered"]
