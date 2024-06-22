@@ -1,10 +1,12 @@
 extends CharacterBody2D
 
-const SPEED = 200.0
+const DEFAULT_SPEED = 200.0
+const PLANK_SPAWN_SPEED = 100.0
 const GRID_SIZE = 16
 
 var fromPos = [0, 0]
 var targetPos = [0, 0]
+var currentMovementSpeed = 0.0
 
 var lastInputs = {"ui_left": 0, "ui_right": 0, "ui_up": 0, "ui_down": 0}
 
@@ -50,20 +52,23 @@ func nextMove():
 		var isTargetWalkable = World.get_custom_data_at(Vector2i(targetPos[0], targetPos[1]), "isWalkable")
 		if !isTargetWalkable:
 			World.spawn_plank(Vector2i(targetPos[0], targetPos[1]))
-	
+			currentMovementSpeed = PLANK_SPAWN_SPEED
+		else:
+			currentMovementSpeed = DEFAULT_SPEED
+
 	else:
 		$AnimationPlayer.stop()
 
 func _process(delta):
 	# Move left/right
 	if fromPos[0] != targetPos[0]:
-		position.x = move_toward(position.x, targetPos[0] * GRID_SIZE, delta * SPEED)
+		position.x = move_toward(position.x, targetPos[0] * GRID_SIZE, delta * currentMovementSpeed)
 		if position.x == targetPos[0] * GRID_SIZE:
 			nextMove()
 	
 	# Move top/down
 	if fromPos[1] != targetPos[1]:
-		position.y = move_toward(position.y, targetPos[1] * GRID_SIZE, delta * SPEED)
+		position.y = move_toward(position.y, targetPos[1] * GRID_SIZE, delta * currentMovementSpeed)
 		if position.y == targetPos[1] * GRID_SIZE:
 			nextMove()
 			
