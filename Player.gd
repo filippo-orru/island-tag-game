@@ -6,22 +6,46 @@ const GRID_SIZE = 16
 var fromPos = [0, 0]
 var targetPos = [0, 0]
 
+var lastInputs = {"ui_left": 0, "ui_right": 0, "ui_up": 0, "ui_down": 0}
+
+func _input(event):
+	if event.is_action_pressed("ui_left"):
+		lastInputs["ui_left"] = Time.get_ticks_msec()
+	elif event.is_action_released("ui_left"):
+		lastInputs["ui_left"] = 0
+		
+	if event.is_action_pressed("ui_right"):
+		lastInputs["ui_right"] = Time.get_ticks_msec()
+	elif event.is_action_released("ui_right"):
+		lastInputs["ui_right"] = 0
+		
+	if event.is_action_pressed("ui_up"):
+		lastInputs["ui_up"] = Time.get_ticks_msec()
+	elif event.is_action_released("ui_up"):
+		lastInputs["ui_up"] = 0
+		
+	if event.is_action_pressed("ui_down"):
+		lastInputs["ui_down"] = Time.get_ticks_msec()
+	elif event.is_action_released("ui_down"):
+		lastInputs["ui_down"] = 0
+
 func nextMove():
 	fromPos[0] = targetPos[0]
 	fromPos[1] = targetPos[1]
 	
-	# TODO save input "last timee direction was pressed" to make not left/right take precedence
-	var xDirection = Input.get_axis("ui_left", "ui_right")
-	var yDirection = Input.get_axis("ui_up", "ui_down")
-	
-	if xDirection:
-		# TODO -1, 0 or 1. no floats on dpad
-		targetPos[0] += xDirection
-		get_node(".").look_at(self.position + Vector2(1 * xDirection, 0))
-	elif yDirection:
-		targetPos[1] += yDirection
-		get_node(".").look_at(self.position + Vector2(0, 1 * yDirection))
-
+	if Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down") != Vector2.ZERO:
+		if lastInputs["ui_left"] > lastInputs["ui_right"] && lastInputs["ui_left"] > lastInputs["ui_up"] && lastInputs["ui_left"] > lastInputs["ui_down"]:
+			targetPos[0] -= 1
+			get_node(".").look_at(self.position - Vector2(1, 0))
+		elif lastInputs["ui_right"] > lastInputs["ui_up"] && lastInputs["ui_right"] > lastInputs["ui_down"]:
+			targetPos[0] += 1
+			get_node(".").look_at(self.position + Vector2(1, 0))
+		elif lastInputs["ui_up"] > lastInputs["ui_down"]:
+			targetPos[1] -= 1
+			get_node(".").look_at(self.position - Vector2(0, 1))
+		else:
+			targetPos[1] += 1
+			get_node(".").look_at(self.position + Vector2(0, 1))
 
 func _process(delta):
 	# Move left/right
