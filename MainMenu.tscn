@@ -1,0 +1,55 @@
+[gd_scene load_steps=4 format=3 uid="uid://bjekja44xol4g"]
+
+[ext_resource type="Script" path="res://MainMenu.gd" id="1_p5tuy"]
+[ext_resource type="PackedScene" uid="uid://c4ll6sfrlstyu" path="res://player/player.tscn" id="2_5ul1v"]
+[ext_resource type="PackedScene" uid="uid://bdlafsg6ckc8h" path="res://world.tscn" id="3_g0kqh"]
+
+[node name="GlobalScene" type="Node2D"]
+script = ExtResource("1_p5tuy")
+player = ExtResource("2_5ul1v")
+world = ExtResource("3_g0kqh")
+
+[node name="MainMenu" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 94.0
+offset_bottom = 154.0
+
+[node name="MarginContainer" type="MarginContainer" parent="MainMenu"]
+offset_right = 94.0
+offset_bottom = 154.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu/MarginContainer"]
+layout_mode = 2
+
+[node name="HostButton" type="Button" parent="MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Host Game"
+
+[node name="Label" type="Label" parent="MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "--- or ---
+Host IP:"
+horizontal_alignment = 1
+
+[node name="IPAddress" type="LineEdit" parent="MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "1.2.3.4"
+
+[node name="ConnectButton" type="Button" parent="MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Join Game"
+
+[node name="SpawnTarget" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://player/player.tscn")
+spawn_path = NodePath("../SpawnTarget")
+
+[node name="LocalScenes" type="Node" parent="."]
+unique_name_in_owner = true
+
+[connection signal="pressed" from="MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
+[connection signal="pressed" from="MainMenu/MarginContainer/VBoxContainer/ConnectButton" to="." method="_on_connect_button_pressed"]

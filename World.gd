@@ -12,6 +12,8 @@ var _player_scene = preload("res://player/player.tscn")
 func _ready():
 	_instance = self if _instance == null else _instance
 	
+	return
+	
 	var player: Player = _player_scene.instantiate()
 	player.position = Vector2(0, 0)
 	player.playerName = "Player 1"
