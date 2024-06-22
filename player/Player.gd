@@ -1,3 +1,4 @@
+class_name Player
 extends CharacterBody2D
 
 const DEFAULT_SPEED = 200.0

@@ -12,16 +12,17 @@ var _player_scene = preload("res://player/player.tscn")
 func _ready():
 	_instance = self if _instance == null else _instance
 	
-	var player = _player_scene.instantiate()
+	var player: Player = _player_scene.instantiate()
 	player.position = Vector2(0, 0)
-	player.get_child(0).playerName = "Player 1"
-	player.get_child(0).controller = PlayerKeyboardControllStrategy.new()
+	player.playerName = "Player 1"
+	player.controller = PlayerKeyboardControllStrategy.new()
 	add_child(player)
 	
-	var bot1 = _player_scene.instantiate()
+	var bot1: Player = _player_scene.instantiate()
 	bot1.position = Vector2(2 * GameWorld.GRID_SIZE, 2 * GameWorld.GRID_SIZE)
-	bot1.get_child(0).playerName = "Bot 1"
-	bot1.get_child(0).controller = PlayerBotControllStrategy.new()
+	bot1.playerName = "Bot 1"
+	bot1.controller = PlayerBotControllStrategy.new()
+	bot1.get_node("Camera2D").set_enabled(false)
 	add_child(bot1)
 
 static func get_tile_data_at(layer: int, position: Vector2i) -> TileData:
