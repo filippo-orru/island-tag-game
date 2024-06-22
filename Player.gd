@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
-const SPEED = 300.0
-const GRID_SIZE = 32
+const SPEED = 200.0
+const GRID_SIZE = 16
 
 var fromPos = [0, 0]
 var targetPos = [0, 0]
