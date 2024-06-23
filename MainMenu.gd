@@ -49,7 +49,7 @@ func load_game(loadMap: bool, singlePlayer = false):
 	if loadMap:
 		change_level.call_deferred(load("res://world.tscn"), singlePlayer)
 
-# Call this function deferred and only on the main authority (server).
+# Call this function deferred and only on the main authority (server) or in singleplayer.
 func change_level(scene: PackedScene, isSinglePlayer: bool):
 	for child in $LevelSpawnTarget.get_children():
 		%LevelSpawnTarget.remove_child(child)
@@ -58,7 +58,8 @@ func change_level(scene: PackedScene, isSinglePlayer: bool):
 	var world: GameWorld = scene.instantiate()
 	world.isSinglePlayer = isSinglePlayer
 	$LevelSpawnTarget.add_child(world)
-	singlePlayer_PlayerInit.call_deferred(world)
+	if isSinglePlayer:
+		singlePlayer_PlayerInit.call_deferred(world)
 
 # The server can restart the level by pressing F5.
 func _input(event):
