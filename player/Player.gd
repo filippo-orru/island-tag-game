@@ -11,7 +11,7 @@ const RUNNER_PATCH_RECT = Rect2(0, 272, 48, 48)
 @export var fromPos = Vector2i(0, 0)
 @export var targetPos = Vector2i(0, 0)
 @export var currentMovementSpeed = 0.0
-var hunter = false
+@export var hunter = false
 @export var tagged = false
 @export var score = 0
 
@@ -110,8 +110,8 @@ func _on_area_entered(area):
 		return
 	
 	# TODO implement tag strategies
-	#  - taggedPlayer also gets hunter
-	#  - hunter is switche
+	#  [ ] taggedPlayer also gets hunter
+	#  [x] switch hunter is switche
 	print(self.playerName, " tagged ", taggedPlayer.playerName)
 	taggedPlayer.tag.call_deferred()
 	set_hunter(false)
