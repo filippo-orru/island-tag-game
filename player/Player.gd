@@ -53,7 +53,7 @@ func _process(delta):
 	
 	var changeVector = targetPos - fromPos
 	# React instantly to keyboard events for the animation to make game "smooth & reactive"
-	if controller.nextVector != Vector2.ZERO:
+	if controller.nextVector != Vector2.ZERO and not tagged:
 		changeVector = controller.nextVector
 	
 	if changeVector.x < 0:
