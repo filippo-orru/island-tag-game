@@ -5,6 +5,9 @@ const DEFAULT_SPEED = 200.0
 const PLANK_SPAWN_SPEED = 100.0
 const GRID_SIZE = GameWorld.GRID_SIZE
 
+const HUNTER_PATCH_RECT = Rect2(976, 160, 48, 48)
+const RUNNER_PATCH_RECT = Rect2(0, 272, 48, 48)
+
 @export var fromPos = Vector2i(0, 0)
 @export var targetPos = Vector2i(0, 0)
 @export var currentMovementSpeed = 0.0
@@ -29,6 +32,7 @@ func _ready():
 	playerTag.text = playerName
 	fromPos = Vector2i(position / GRID_SIZE)
 	targetPos = Vector2i(position / GRID_SIZE)
+	set_hunter(hunter)
 
 func _input(event):
 	controller._input(event)
@@ -108,11 +112,18 @@ func _on_area_entered(area):
 	#  - hunter is switche
 	print(self.playerName, " tagged ", taggedPlayer.playerName)
 	taggedPlayer.tag.call_deferred()
-	hunter = false
+	set_hunter(false)
 	
 func tag():
 	tagged = true
 	await get_tree().create_timer(1.0).timeout
 	tagged = false
-	hunter = true
+	set_hunter(true)
+
+func set_hunter(is_hunter: bool):
+	hunter = is_hunter
+	if hunter:
+		$Control/MarginContainer/NinePatchRect.region_rect = HUNTER_PATCH_RECT
+	else:
+		$Control/MarginContainer/NinePatchRect.region_rect = RUNNER_PATCH_RECT
 	
