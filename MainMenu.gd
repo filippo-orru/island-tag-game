@@ -57,6 +57,7 @@ func change_level(scene: PackedScene, isSinglePlayer: bool):
 	
 	var world: GameWorld = scene.instantiate()
 	world.isSinglePlayer = isSinglePlayer
+	world.random_seed = RandomNumberGenerator.new().randi()
 	$LevelSpawnTarget.add_child(world)
 	if isSinglePlayer:
 		singlePlayer_PlayerInit.call_deferred(world)

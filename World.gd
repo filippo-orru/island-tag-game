@@ -9,12 +9,17 @@ const GRID_SIZE = 16
 var isSinglePlayer: bool = false
 
 @export var player_scene: PackedScene
+@export var random_seed: int
 
 func _ready():
 	# We only need to spawn players on the server.
-	if isSinglePlayer or not multiplayer.is_server():
-		return
+	if not isSinglePlayer and multiplayer.is_server():
+		_ready_multiplayer()
+		
+	if isSinglePlayer or multiplayer.is_server():
+		_generate_islands(random_seed)
 
+func _ready_multiplayer():
 	multiplayer.peer_connected.connect(add_player)
 	multiplayer.peer_disconnected.connect(del_player)
 
@@ -63,7 +68,7 @@ func add_player(id: int):
 		spawnPosition = Vector2i(
 			rng.randi_range(-int(spreadRadius), int(spreadRadius)),
 			rng.randi_range(-int(spreadRadius), int(spreadRadius))
-			)
+		)
 		spreadRadius += 0.1
 	player.position = spawnPosition * GRID_SIZE
 	
@@ -82,6 +87,39 @@ func add_player(id: int):
 
 	spawn_player(player)
 
+func _generate_islands(seed: int):
+	var random = RandomNumberGenerator.new()
+	random.seed = seed
+
+	var worldWidth = ($Map/Boundary/BoundaryCollider/Right.shape.distance + $Map/Boundary/BoundaryCollider/Left.shape.distance) / GRID_SIZE
+	var worldHeight = ($Map/Boundary/BoundaryCollider/Top.shape.distance + $Map/Boundary/BoundaryCollider/Bottom.shape.distance) / GRID_SIZE
+	
+	var worldRadius = min(worldWidth / 2, worldHeight / 2) - 10
+	
+	var patternIndex = TILESET_PATTERN_ISLANDS[random.randi_range(0, len(TILESET_PATTERN_ISLANDS) - 1)]
+	
+	var islandPattern = tile_map.tile_set.get_pattern(patternIndex[0])
+	var islandBackgroundPattern = tile_map.tile_set.get_pattern(patternIndex[1])
+	
+	var islandCoords = Vector2i(0, 0)
+	while not _has_space_for_island(islandCoords):
+		islandCoords = Vector2i(
+			random.randi_range(-worldRadius, worldRadius),
+			random.randi_range(-worldRadius, worldRadius)
+		)
+	
+	tile_map.set_pattern(TILEMAP_LAYER_ISLAND, islandCoords, islandPattern)
+	tile_map.set_pattern(TILEMAP_LAYER_ISLAND_BACKDROP, islandCoords + Vector2i(1, 1), islandBackgroundPattern)
+
+func _has_space_for_island(coords: Vector2i):
+	for offsetX in range(10):
+		for offsetY in range(10):
+			var offsetCoords = Vector2i(coords.x + offsetX, coords.y + offsetY)
+			var isWalkable = get_custom_data_at(TILEMAP_LAYER_ISLAND, offsetCoords, "isWalkable")
+			if isWalkable:
+				return false
+		
+	return true
 
 func spawn_player(player: Player):
 	$PlayerSpawnTarget.add_child(player, true)
@@ -106,6 +144,8 @@ func get_custom_data_at(layer: int, position: Vector2i, custom_data_name: String
 func isWalkable(position: Vector2i) -> bool:
 	return get_custom_data_at(1, position, "isWalkable") || get_custom_data_at(2, position, "isWalkable")
 
+const TILEMAP_LAYER_ISLAND_BACKDROP = 0
+const TILEMAP_LAYER_ISLAND = 1
 const TILEMAP_LAYER_PLANKS = 2
 
 const TILESET_TILES_PATHS_AND_OBJECTS = 3
@@ -113,6 +153,12 @@ const TILESET_TILES_PATHS_AND_OBJECTS = 3
 const TILESET_PLANK_HORIZONTAL_COORDS = Vector2i(23, 8)
 const TILESET_PLANK_VERTICAL_COORDS = Vector2i(22, 7)
 const TILESET_PLANK_JOINT_COORDS = Vector2i(22, 8)
+
+# Index of the island pattern (foreground, background/decoration)
+const TILESET_PATTERN_ISLANDS = [
+	[0, 2],
+	[1, 3],
+]
 
 var spawnedPlanks = []
 

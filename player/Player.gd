@@ -11,7 +11,7 @@ const RUNNER_PATCH_RECT = Rect2(0, 272, 48, 48)
 @export var fromPos = Vector2i(0, 0)
 @export var targetPos = Vector2i(0, 0)
 @export var currentMovementSpeed = 0.0
-@export var hunter = false
+var hunter = false
 @export var tagged = false
 
 @export var playerName: String
@@ -32,7 +32,7 @@ func _ready():
 	playerTag.text = playerName
 	fromPos = Vector2i(position / GRID_SIZE)
 	targetPos = Vector2i(position / GRID_SIZE)
-	set_hunter(hunter)
+	#set_hunter(hunter)
 
 func _input(event):
 	controller._input(event)
