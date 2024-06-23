@@ -9,61 +9,6 @@ script = ExtResource("1_p5tuy")
 player = ExtResource("2_5ul1v")
 world = ExtResource("3_g0kqh")
 
-[node name="MainMenu" type="Control" parent="."]
-unique_name_in_owner = true
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="MarginContainer" type="MarginContainer" parent="MainMenu"]
-custom_minimum_size = Vector2(16, 16)
-layout_mode = 0
-offset_left = 265.0
-offset_top = 133.0
-offset_right = 890.0
-offset_bottom = 557.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu/MarginContainer"]
-layout_mode = 2
-alignment = 1
-
-[node name="SinglePlayerButton" type="Button" parent="MainMenu/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Single Player"
-
-[node name="SingleOrOnline" type="Label" parent="MainMenu/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "
---- or ---
-
-"
-horizontal_alignment = 1
-
-[node name="HostButton" type="Button" parent="MainMenu/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Host Game"
-
-[node name="Label" type="Label" parent="MainMenu/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "
---- or ---
-Host IP:"
-horizontal_alignment = 1
-
-[node name="IpAddress" type="LineEdit" parent="MainMenu/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-placeholder_text = "1.2.3.4"
-
-[node name="ConnectButton" type="Button" parent="MainMenu/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Join Game"
-
 [node name="SpawnTarget" type="Node2D" parent="."]
 unique_name_in_owner = true
 
@@ -76,11 +21,73 @@ spawn_path = NodePath("../SpawnTarget")
 [node name="LocalScenes" type="Node" parent="."]
 unique_name_in_owner = true
 
-[node name="MenuCamera" type="Camera2D" parent="."]
-unique_name_in_owner = true
-position = Vector2(576, 324)
-zoom = Vector2(2, 2)
+[node name="MenuCanvas" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
 
-[connection signal="pressed" from="MainMenu/MarginContainer/VBoxContainer/SinglePlayerButton" to="." method="_on_singleplayer_button_pressed"]
-[connection signal="pressed" from="MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
-[connection signal="pressed" from="MainMenu/MarginContainer/VBoxContainer/ConnectButton" to="." method="_on_connect_button_pressed"]
+[node name="MainMenu" type="Control" parent="MenuCanvas"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="MenuCanvas/MainMenu"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -312.5
+offset_top = -212.0
+offset_right = 312.5
+offset_bottom = 212.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MenuCanvas/MainMenu/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="SinglePlayerButton" type="Button" parent="MenuCanvas/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Single Player"
+
+[node name="SingleOrOnline" type="Label" parent="MenuCanvas/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "
+--- or ---
+
+"
+horizontal_alignment = 1
+
+[node name="HostButton" type="Button" parent="MenuCanvas/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Host Game"
+
+[node name="Label" type="Label" parent="MenuCanvas/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "
+--- or ---
+Host IP:"
+horizontal_alignment = 1
+
+[node name="IpAddress" type="LineEdit" parent="MenuCanvas/MainMenu/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "1.2.3.4"
+
+[node name="ConnectButton" type="Button" parent="MenuCanvas/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Join Game"
+
+[connection signal="pressed" from="MenuCanvas/MainMenu/MarginContainer/VBoxContainer/SinglePlayerButton" to="." method="_on_singleplayer_button_pressed"]
+[connection signal="pressed" from="MenuCanvas/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
+[connection signal="pressed" from="MenuCanvas/MainMenu/MarginContainer/VBoxContainer/ConnectButton" to="." method="_on_connect_button_pressed"]

@@ -47,7 +47,6 @@ func _on_connect_button_pressed():
 
 func load_game():
 	%MainMenu.hide()
-	%MenuCamera.set_enabled(false)
 	%LocalScenes.add_child(world.instantiate())
 	add_player.rpc(multiplayer.get_unique_id())
 
@@ -85,7 +84,6 @@ func server_offline():
 
 func _on_singleplayer_button_pressed():
 	%MainMenu.hide()
-	%MenuCamera.set_enabled(false)
 	%SpawnTarget.add_child(world.instantiate())
 	
 	var player1 = player.instantiate()
