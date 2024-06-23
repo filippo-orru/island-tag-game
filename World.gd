@@ -45,6 +45,9 @@ func add_player(id: int):
 	else:
 		player.playerName = str(id % 100)
 		player.controller = PlayerRemoteControllStrategy.new()
+		# Replay previous rpc calls
+		for spawnedPlank in spawnedPlanks:
+			spawn_plank.rpc_id(id, spawnedPlank["coming_from"], spawnedPlank["position"])
 
 	$PlayerSpawnTarget.add_child(player, true)
 
@@ -76,8 +79,12 @@ const TILESET_PLANK_HORIZONTAL_COORDS = Vector2i(23, 8)
 const TILESET_PLANK_VERTICAL_COORDS = Vector2i(22, 7)
 const TILESET_PLANK_JOINT_COORDS = Vector2i(22, 8)
 
+var spawnedPlanks = []
+
 @rpc("any_peer", "call_local", "reliable")
 func spawn_plank(coming_from: Vector2i, position: Vector2i) -> void:
+	spawnedPlanks.append({"coming_from": coming_from, "position": position})
+	
 	var plankType
 	if coming_from.x != position.x:
 		plankType = TILESET_PLANK_HORIZONTAL_COORDS
