@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://World.gd" id="1_3v4c7"]
 [ext_resource type="TileSet" uid="uid://81ugtyb0pa7t" path="res://map.tres" id="1_e2slv"]
 [ext_resource type="PackedScene" uid="uid://c4ll6sfrlstyu" path="res://player/player.tscn" id="2_us6oj"]
-[ext_resource type="PackedScene" uid="uid://j3svvubaqtbq" path="res://assets/items/Coin.tscn" id="3_1wro7"]
+[ext_resource type="PackedScene" uid="uid://j3svvubaqtbq" path="res://assets/items/coin.tscn" id="3_1wro7"]
 [ext_resource type="Script" path="res://WaterBackground.gd" id="5_uph1g"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_sq3vr"]
