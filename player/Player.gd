@@ -116,6 +116,7 @@ func _on_area_entered(area):
 	
 func tag():
 	tagged = true
+	$Camera2D.shake()
 	await get_tree().create_timer(1.0).timeout
 	tagged = false
 	set_hunter(true)
