@@ -25,7 +25,7 @@ func _on_host_button_pressed():
 
 func _on_connect_button_pressed():
 	var peer = ENetMultiplayerPeer.new()
-	peer.create_client(%To.text, 9064)
+	peer.create_client(%IPAddress.text, 9064)
 	multiplayer.multiplayer_peer = peer
 
 	multiplayer.connected_to_server.connect(load_game) # Loads only if connected to a server
