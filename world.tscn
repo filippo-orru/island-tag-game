@@ -1,17 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://bdlafsg6ckc8h"]
+[gd_scene load_steps=10 format=3 uid="uid://bdlafsg6ckc8h"]
 
 [ext_resource type="Script" path="res://World.gd" id="1_3v4c7"]
-[ext_resource type="Script" path="res://Water.gd" id="1_bmu76"]
 [ext_resource type="TileSet" uid="uid://81ugtyb0pa7t" path="res://map.tres" id="1_e2slv"]
-[ext_resource type="Texture2D" uid="uid://fof0rbb3joao" path="res://icon.svg" id="1_jkumn"]
 [ext_resource type="PackedScene" uid="uid://c4ll6sfrlstyu" path="res://player/player.tscn" id="2_us6oj"]
+[ext_resource type="PackedScene" uid="uid://j3svvubaqtbq" path="res://assets/items/Coin.tscn" id="3_1wro7"]
 [ext_resource type="Script" path="res://WaterBackground.gd" id="5_uph1g"]
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3kkhv"]
-blend_mode = 1
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ebxv2"]
-size = Vector2(128, 128)
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_sq3vr"]
 distance = -546.0
@@ -32,22 +25,11 @@ distance = -578.0
 script = ExtResource("1_3v4c7")
 player_scene = ExtResource("2_us6oj")
 
-[node name="Block" type="Area2D" parent="."]
-collision_layer = 2
-collision_mask = 3
-script = ExtResource("1_bmu76")
-
-[node name="Block-Sprite" type="Sprite2D" parent="Block"]
-material = SubResource("CanvasItemMaterial_3kkhv")
-position = Vector2(160, 43)
-texture = ExtResource("1_jkumn")
-
-[node name="Block-Collision" type="CollisionShape2D" parent="Block"]
-position = Vector2(160, 43)
-shape = SubResource("RectangleShape2D_ebxv2")
-
 [node name="Map" type="Node2D" parent="."]
 position = Vector2(-8, -8)
+
+[node name="Coin" parent="Map" instance=ExtResource("3_1wro7")]
+position = Vector2(-23, -16)
 
 [node name="WaterBackground" type="TileMap" parent="Map"]
 tile_set = ExtResource("1_e2slv")
@@ -95,5 +77,4 @@ spawn_path = NodePath("../PlayerSpawnTarget")
 
 [node name="PlayerSpawnTarget" type="Node2D" parent="."]
 
-[connection signal="body_entered" from="Block" to="Block" method="_on_body_entered"]
 [connection signal="spawned" from="MultiplayerSpawner" to="." method="_on_multiplayer_spawner_spawned"]
