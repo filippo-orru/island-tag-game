@@ -6,6 +6,7 @@ const GRID_SIZE = 16
 @onready var tile_map: TileMap = $Map/Island
 
 static var _instance: GameWorld = null
+var isSinglePlayer: bool = false
 
 @export var player_scene: PackedScene
 
@@ -13,8 +14,7 @@ func _ready():
 	_instance = self if _instance == null else _instance
 
 	# We only need to spawn players on the server.
-	# TODO also not on singleplayer
-	if not multiplayer.is_server():
+	if isSinglePlayer or not multiplayer.is_server():
 		return
 
 	multiplayer.peer_connected.connect(add_player)

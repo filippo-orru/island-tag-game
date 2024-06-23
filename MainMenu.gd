@@ -21,7 +21,7 @@ func _on_host_button_pressed():
 
 	multiplayer.multiplayer_peer = peer
 
-	load_game(true)
+	load_game(true, false)
 
 
 func _on_connect_button_pressed():
@@ -36,25 +36,27 @@ func _on_connect_button_pressed():
 		return
 
 	multiplayer.multiplayer_peer = peer
-	load_game(false)
+	load_game(false, false)
 
 	multiplayer.server_disconnected.connect(server_offline)
 
 
-func load_game(loadMap: bool):
+func load_game(loadMap: bool, singlePlayer = false):
 	%MainMenu.hide()
 
 	# Only change level on the server.
 	# Clients will instantiate the level via the spawner.
 	if loadMap:
-		change_level.call_deferred(load("res://world.tscn"))
+		change_level.call_deferred(load("res://world.tscn"), singlePlayer)
 
 # Call this function deferred and only on the main authority (server).
-func change_level(scene: PackedScene):
+func change_level(scene: PackedScene, isSinglePlayer):
 	for child in $LevelSpawnTarget.get_children():
 		%LevelSpawnTarget.remove_child(child)
 		child.queue_free()
-	$LevelSpawnTarget.add_child(scene.instantiate())
+	var instance = scene.instantiate()
+	instance.isSinglePlayer = isSinglePlayer
+	$LevelSpawnTarget.add_child(instance)
 
 # The server can restart the level by pressing F5.
 func _input(event):
@@ -96,7 +98,7 @@ func server_offline():
 
 
 func _on_singleplayer_button_pressed():
-	load_game(true)
+	load_game(true, true)
 	singlePlayer_PlayerInit.call_deferred()
 	
 func singlePlayer_PlayerInit():
