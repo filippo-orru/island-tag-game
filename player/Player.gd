@@ -49,6 +49,9 @@ func _process(delta):
 	# Animation
 	
 	var changeVector = targetPos - fromPos
+	# React instantly to keyboard events for the animation to make game "smooth & reactive"
+	if controller.nextVector != Vector2.ZERO:
+		changeVector = controller.nextVector
 	
 	if changeVector.x < 0:
 		$AnimationPlayer.play("walk_left")

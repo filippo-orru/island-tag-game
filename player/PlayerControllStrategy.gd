@@ -1,6 +1,8 @@
 class_name PlayerControllStrategy
 extends RefCounted
 
+var nextVector = Vector2.ZERO
+
 func _input(event):
 	pass
 
