@@ -6,6 +6,8 @@ const GRID_SIZE = 16
 @onready var tile_map: TileMap = $Map/Island
 @onready var player_spawn_target = $PlayerSpawnTarget
 
+@onready var coin_scene: PackedScene = load("res://assets/items/Coin.tscn")
+
 var isSinglePlayer: bool = false
 
 @export var player_scene: PackedScene
@@ -115,6 +117,11 @@ func _generate_islands(seed: int):
 	
 	tile_map.set_pattern(TILEMAP_LAYER_ISLAND, islandCoords, islandPattern)
 	tile_map.set_pattern(TILEMAP_LAYER_ISLAND_BACKDROP, islandCoords + Vector2i(1, 1), islandBackgroundPattern)
+	
+	var coin = coin_scene.instantiate()
+	coin.position = Vector2((islandCoords + Vector2i(4, 4)) * GRID_SIZE)
+	
+	$Map/CoinsSpawnTarget.add_child(coin, true)
 
 func _has_space_for_island(coords: Vector2i):
 	for offsetX in range(10):
