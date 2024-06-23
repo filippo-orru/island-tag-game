@@ -13,6 +13,7 @@ const RUNNER_PATCH_RECT = Rect2(0, 272, 48, 48)
 @export var currentMovementSpeed = 0.0
 var hunter = false
 @export var tagged = false
+@export var score = 0
 
 @export var playerName: String
 
@@ -25,11 +26,10 @@ var hunter = false
 
 
 @onready var world: GameWorld = get_parent().get_parent()
+@onready var playerTag = $Control/MarginContainer/MarginContainer2/CenterContainer/PlayerTag
 var controller: PlayerControllStrategy
 
 func _ready():
-	var playerTag = $Control/MarginContainer/MarginContainer2/CenterContainer/PlayerTag
-	playerTag.text = playerName
 	fromPos = Vector2i(position / GRID_SIZE)
 	targetPos = Vector2i(position / GRID_SIZE)
 	#set_hunter(hunter)
@@ -53,6 +53,8 @@ func nextMove():
 		currentMovementSpeed = DEFAULT_SPEED
 
 func _process(delta):
+	playerTag.text = playerName + " (" + str(score) + ")"
+	
 	# Animation
 	
 	var changeVector = targetPos - fromPos
@@ -113,6 +115,7 @@ func _on_area_entered(area):
 	print(self.playerName, " tagged ", taggedPlayer.playerName)
 	taggedPlayer.tag.call_deferred()
 	set_hunter(false)
+	score += 1
 	
 func tag():
 	tagged = true
@@ -128,3 +131,6 @@ func set_hunter(is_hunter: bool):
 	else:
 		$Control/MarginContainer/NinePatchRect.region_rect = RUNNER_PATCH_RECT
 	
+@rpc("any_peer", "call_local", "reliable")
+func setName(playerName):
+	self.playerName = playerName

@@ -47,7 +47,6 @@ func isSpawnPositionBlocked(spawnPosition: Vector2i, blockedPositions) -> bool:
 	return false
 
 func add_player(id: int):
-	print("add player (on server) ", id)
 	var player = player_scene.instantiate()
 
 	# Find free space to spawn by just rolling until we have a free position
@@ -57,7 +56,7 @@ func add_player(id: int):
 		blockedPositions.append(otherPlayer.fromPos)
 		if otherPlayer.fromPos != otherPlayer.targetPos:
 			blockedPositions.append(otherPlayer.targetPos)
-	#print("blocked positions = ", blockedPositions, " for players ", players)
+	print("blocked positions = ", blockedPositions, " for players ", players)
 		
 	var spawnPosition = Vector2i.ZERO
 	var spreadRadius = 1
@@ -75,16 +74,22 @@ func add_player(id: int):
 	player.playerId = id
 
 	if id == 1:
-		player.playerName = "Host"
+		if OS.has_environment("USERNAME"): # WINDOWS
+			player.playerName = OS.get_environment("USERNAME")
+		elif OS.has_environment("USER"): # UNIX
+			player.playerName = OS.get_environment("USER")
+		else:
+			player.playerName = "Host"
 		player.controller = PlayerKeyboardControllStrategy.new()
 		player.hunter = true
 	else:
-		player.playerName = str(id % 100)
+		#player.playerName = str(id % 100)
 		player.controller = PlayerRemoteControllStrategy.new()
 		# Replay previous rpc calls
 		for spawnedPlank in spawnedPlanks:
 			spawn_plank.rpc_id(id, spawnedPlank["coming_from"], spawnedPlank["position"])
 
+	print("add player (on server) id=", id, ", name=", player.playerName, ", pos=", player.position / GRID_SIZE)
 	spawn_player(player)
 
 func _generate_islands(seed: int):
@@ -228,7 +233,15 @@ func _on_multiplayer_spawner_spawned(player):
 	if player is Player:
 		if player.playerId == multiplayer.get_unique_id():
 			player.controller = PlayerKeyboardControllStrategy.new()
-			print("spawned own player")
+			
+			if OS.has_environment("USERNAME"): # WINDOWS
+				player.setName.rpc(OS.get_environment("USERNAME"))
+			elif OS.has_environment("USER"): # UNIX
+				player.setName.rpc(OS.get_environment("USER"))
+			else:
+				player.setName.rpc("Player " + str(player.playerId % 100))
+				
+			print("spawned own")
 		else:
 			player.controller = PlayerRemoteControllStrategy.new()
 			player.get_node("Camera2D").set_enabled(false)
