@@ -82,6 +82,7 @@ func singlePlayer_PlayerInit(world: GameWorld):
 	var player1 = player.instantiate()
 	player1.position = Vector2(0, 0)
 	player1.playerName = "Me"
+	player1.hunter = true
 	player1.controller = PlayerKeyboardControllStrategy.new()
 	world.spawn_player(player1)
 
@@ -89,8 +90,9 @@ func singlePlayer_PlayerInit(world: GameWorld):
 	bot1.position = Vector2(32, 32)
 	bot1.playerName = "Bot 1"
 	bot1.get_node("Camera2D").set_enabled(false)
-	bot1.hunter = true
+	bot1.hunter = false
 	var botController: PlayerBotControllStrategy = PlayerBotControllStrategy.new()
 	botController.targetPlayer = player1
+	botController.player = bot1
 	bot1.controller = botController
 	world.spawn_player(bot1)

@@ -86,8 +86,8 @@ func _on_area_entered(area):
 	if not hunter:
 		return
 		
-	var taggedPlayer: Player = area.get_parent()
-	if taggedPlayer.name != "Player":
+	var taggedPlayer = area.get_parent()
+	if not taggedPlayer is Player:
 		return
 	
 	# TODO implement tag strategies
