@@ -78,7 +78,7 @@ func _process(delta):
 		(position.x > max(fromPos.x, targetPos.x) * GRID_SIZE) || \
 		(position.y < min(fromPos.y, targetPos.y) * GRID_SIZE) || \
 		(position.y > max(fromPos.y, targetPos.y) * GRID_SIZE):
-		print("fix position: ", position / GRID_SIZE, " - ", fromPos, " ", targetPos)
+		#print("fix position: ", position / GRID_SIZE, " - ", fromPos, " ", targetPos)
 		position = fromPos * GRID_SIZE
 	
 	# Movement
