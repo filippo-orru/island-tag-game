@@ -35,6 +35,7 @@ animation_library={
 2d_render/layer_2="Floor"
 2d_physics/layer_1="Player"
 2d_physics/layer_2="Boundary"
+2d_physics/layer_3="Tagging"
 
 [rendering]
 

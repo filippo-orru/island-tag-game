@@ -4,6 +4,7 @@ class_name GameWorld
 const GRID_SIZE = 16
 
 @onready var tile_map: TileMap = $Map/Island
+@onready var player_spawn_target = $PlayerSpawnTarget
 
 var isSinglePlayer: bool = false
 
@@ -49,6 +50,10 @@ func add_player(id: int):
 		for spawnedPlank in spawnedPlanks:
 			spawn_plank.rpc_id(id, spawnedPlank["coming_from"], spawnedPlank["position"])
 
+	spawn_player(player)
+
+
+func spawn_player(player: Player):
 	$PlayerSpawnTarget.add_child(player, true)
 
 

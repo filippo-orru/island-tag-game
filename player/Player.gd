@@ -8,6 +8,7 @@ const GRID_SIZE = GameWorld.GRID_SIZE
 @export var fromPos = Vector2i(0, 0)
 @export var targetPos = Vector2i(0, 0)
 @export var currentMovementSpeed = 0.0
+var hunter = false
 
 @export var playerName: String
 
@@ -39,7 +40,6 @@ func nextMove():
 		targetPos = fromPos + changeVector
 	
 	if not world.isWalkable(targetPos):
-		
 		world.spawn_plank.rpc(fromPos, targetPos)
 		currentMovementSpeed = PLANK_SPAWN_SPEED
 	else:
@@ -77,3 +77,17 @@ func _process(delta):
 			nextMove()
 	elif fromPos == targetPos:
 		nextMove()
+
+
+func _on_area_entered(area):
+	if not hunter:
+		return
+		
+	var taggedPlayer: Player = area.get_parent()
+	if taggedPlayer.name != "Player":
+		return
+	
+	# TODO implement tag strategies
+	#  - taggedPlayer also gets hunter
+	#  - hunter is switche
+	print(self.playerName, " tagged ", taggedPlayer.playerName)

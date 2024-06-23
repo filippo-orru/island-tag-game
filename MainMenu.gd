@@ -50,13 +50,15 @@ func load_game(loadMap: bool, singlePlayer = false):
 		change_level.call_deferred(load("res://world.tscn"), singlePlayer)
 
 # Call this function deferred and only on the main authority (server).
-func change_level(scene: PackedScene, isSinglePlayer):
+func change_level(scene: PackedScene, isSinglePlayer: bool):
 	for child in $LevelSpawnTarget.get_children():
 		%LevelSpawnTarget.remove_child(child)
 		child.queue_free()
-	var instance = scene.instantiate()
-	instance.isSinglePlayer = isSinglePlayer
-	$LevelSpawnTarget.add_child(instance)
+	
+	var world: GameWorld = scene.instantiate()
+	world.isSinglePlayer = isSinglePlayer
+	$LevelSpawnTarget.add_child(world)
+	singlePlayer_PlayerInit.call_deferred(world)
 
 # The server can restart the level by pressing F5.
 func _input(event):
@@ -74,20 +76,20 @@ func server_offline():
 
 func _on_singleplayer_button_pressed():
 	load_game(true, true)
-	singlePlayer_PlayerInit.call_deferred()
 	
-func singlePlayer_PlayerInit():
+func singlePlayer_PlayerInit(world: GameWorld):
 	var player1 = player.instantiate()
 	player1.position = Vector2(0, 0)
 	player1.playerName = "Me"
 	player1.controller = PlayerKeyboardControllStrategy.new()
-	%LevelSpawnTarget.add_child(player1)
+	world.spawn_player(player1)
 
 	var bot1 = player.instantiate()
 	bot1.position = Vector2(32, 32)
 	bot1.playerName = "Bot 1"
 	bot1.get_node("Camera2D").set_enabled(false)
+	bot1.hunter = true
 	var botController: PlayerBotControllStrategy = PlayerBotControllStrategy.new()
 	botController.targetPlayer = player1
 	bot1.controller = botController
-	%LevelSpawnTarget.add_child(bot1)
+	world.spawn_player(bot1)
