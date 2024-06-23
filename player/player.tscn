@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://c4ll6sfrlstyu"]
+[gd_scene load_steps=16 format=3 uid="uid://c4ll6sfrlstyu"]
 
 [ext_resource type="Script" path="res://player/Player.gd" id="1_s5i5o"]
 [ext_resource type="Texture2D" uid="uid://qvydmlsewx82" path="res://assets/characters/character.png" id="2_qvkl6"]
@@ -15,6 +15,12 @@ properties/1/replication_mode = 1
 properties/2/path = NodePath(".:playerId")
 properties/2/spawn = true
 properties/2/replication_mode = 1
+properties/3/path = NodePath(".:tagged")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath(".:hunter")
+properties/4/spawn = true
+properties/4/replication_mode = 1
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_lhbp3"]
 properties/0/path = NodePath(".:fromPos")

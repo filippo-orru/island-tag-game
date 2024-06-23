@@ -72,6 +72,7 @@ func add_player(id: int):
 	if id == 1:
 		player.playerName = "Host"
 		player.controller = PlayerKeyboardControllStrategy.new()
+		player.hunter = true
 	else:
 		player.playerName = str(id % 100)
 		player.controller = PlayerRemoteControllStrategy.new()

@@ -8,8 +8,8 @@ const GRID_SIZE = GameWorld.GRID_SIZE
 @export var fromPos = Vector2i(0, 0)
 @export var targetPos = Vector2i(0, 0)
 @export var currentMovementSpeed = 0.0
-var hunter = false
-var tagged = false
+@export var hunter = false
+@export var tagged = false
 
 @export var playerName: String
 
