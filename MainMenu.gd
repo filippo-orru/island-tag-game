@@ -5,12 +5,10 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+	# Automatically start the server in headless mode.
+	if DisplayServer.get_name() == "headless":
+		print("Automatically starting dedicated server.")
+		_on_host_button_pressed.call_deferred()
 
 
 func _on_host_button_pressed():
@@ -23,9 +21,7 @@ func _on_host_button_pressed():
 
 	multiplayer.multiplayer_peer = peer
 
-	multiplayer.peer_disconnected.connect(remove_player)
-
-	load_game()
+	load_game(true)
 
 
 func _on_connect_button_pressed():
@@ -40,58 +36,76 @@ func _on_connect_button_pressed():
 		return
 
 	multiplayer.multiplayer_peer = peer
+	load_game(false)
 
-	multiplayer.connected_to_server.connect(load_game) # Loads only if connected to a server
 	multiplayer.server_disconnected.connect(server_offline)
 
 
-func load_game():
+func load_game(loadMap: bool):
 	%MainMenu.hide()
-	%LocalScenes.add_child(world.instantiate())
-	add_player.rpc(multiplayer.get_unique_id())
 
+	# Only change level on the server.
+	# Clients will instantiate the level via the spawner.
+	if loadMap:
+		change_level.call_deferred(load("res://world.tscn"))
 
-@rpc("any_peer", "call_local") # Add "call_local" if you also want to spawn a player from the server
-func add_player(id):
-	var player = player.instantiate()
-	player.set_multiplayer_authority(id)
-	
-	player.position = Vector2(0, 0) # TODO based on ID
-	print(get_tree())
-	
-	if id == multiplayer.get_unique_id():
-		player.playerName = "Me"
-		player.controller = PlayerKeyboardControllStrategy.new()
-	
-	else:
-		player.playerName = "Player 2"
-		player.get_node("Camera2D").set_enabled(false)
-		player.controller = PlayerRemoteControllStrategy.new()
+# Call this function deferred and only on the main authority (server).
+func change_level(scene: PackedScene):
+	for child in $LevelSpawnTarget.get_children():
+		%LevelSpawnTarget.remove_child(child)
+		child.queue_free()
+	$LevelSpawnTarget.add_child(scene.instantiate())
 
-	
-	%SpawnTarget.add_child(player)
+# The server can restart the level by pressing F5.
+func _input(event):
+	if not multiplayer.is_server():
+		return
+	if event.is_action("ui_filedialog_refresh") and Input.is_action_just_pressed("ui_filedialog_refresh"):
+		change_level.call_deferred(load("res://world.tscn"))
 
-@rpc("any_peer")
-func remove_player(id):
-	if %SpawnTarget.get_node(str(id)):
-		%SpawnTarget.get_node(str(id)).queue_free()
+#@rpc("any_peer", "call_local") # Add "call_local" if you also want to spawn a player from the server
+#func add_player(id):
+	#var player = player.instantiate()
+	#player.set_multiplayer_authority(id)
+	#
+	#player.position = Vector2(0, 0) # TODO based on ID
+	#print(get_tree())
+	#
+	#if id == multiplayer.get_unique_id():
+		#player.playerName = "Me"
+		#player.controller = PlayerKeyboardControllStrategy.new()
+	#
+	#else:
+		#player.playerName = "Player 2"
+		#player.get_node("Camera2D").set_enabled(false)
+		#player.controller = PlayerRemoteControllStrategy.new()
+#
+	#
+	#%SpawnTarget.add_child(player)
+#
+##@rpc("any_peer")
+#func remove_player(id):
+	#if %SpawnTarget.get_node(str(id)):
+		#%SpawnTarget.get_node(str(id)).queue_free()
 
 func server_offline():
-	%Menu.show()
-	if %LocalScenes.get_child(0):
-		%LocalScenes.get_child(0).queue_free()
+	%MainMenu.show()
+	for child in %LevelSpawnTarget.get_children():
+		%LevelSpawnTarget.remove_child(child)
+		child.queue_free()
 
 
 func _on_singleplayer_button_pressed():
-	%MainMenu.hide()
-	%SpawnTarget.add_child(world.instantiate())
+	load_game(true)
+	singlePlayer_PlayerInit.call_deferred()
 	
+func singlePlayer_PlayerInit():
 	var player1 = player.instantiate()
 	player1.position = Vector2(0, 0)
 	player1.playerName = "Me"
 	player1.controller = PlayerKeyboardControllStrategy.new()
-	%SpawnTarget.add_child(player1)
-	
+	%LevelSpawnTarget.add_child(player1)
+
 	var bot1 = player.instantiate()
 	bot1.position = Vector2(32, 32)
 	bot1.playerName = "Bot 1"
@@ -99,4 +113,4 @@ func _on_singleplayer_button_pressed():
 	var botController: PlayerBotControllStrategy = PlayerBotControllStrategy.new()
 	botController.targetPlayer = player1
 	bot1.controller = botController
-	%SpawnTarget.add_child(bot1)
+	%LevelSpawnTarget.add_child(bot1)

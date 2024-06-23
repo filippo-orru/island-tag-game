@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://bdlafsg6ckc8h"]
+[gd_scene load_steps=13 format=3 uid="uid://bdlafsg6ckc8h"]
 
 [ext_resource type="Script" path="res://World.gd" id="1_3v4c7"]
 [ext_resource type="Script" path="res://Water.gd" id="1_bmu76"]
 [ext_resource type="TileSet" uid="uid://81ugtyb0pa7t" path="res://map.tres" id="1_e2slv"]
 [ext_resource type="Texture2D" uid="uid://fof0rbb3joao" path="res://icon.svg" id="1_jkumn"]
+[ext_resource type="PackedScene" uid="uid://c4ll6sfrlstyu" path="res://player/player.tscn" id="2_us6oj"]
 [ext_resource type="Script" path="res://WaterBackground.gd" id="5_uph1g"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_3kkhv"]
@@ -29,6 +30,7 @@ distance = -578.0
 
 [node name="GameWorld" type="Node2D"]
 script = ExtResource("1_3v4c7")
+player_scene = ExtResource("2_us6oj")
 
 [node name="Block" type="Area2D" parent="."]
 collision_layer = 2
@@ -87,4 +89,11 @@ shape = SubResource("WorldBoundaryShape2D_k3spf")
 [node name="Top" type="CollisionShape2D" parent="Map/Boundary/StaticBody2D"]
 shape = SubResource("WorldBoundaryShape2D_liwvk")
 
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://player/player.tscn")
+spawn_path = NodePath("../PlayerSpawnTarget")
+
+[node name="PlayerSpawnTarget" type="Node2D" parent="."]
+
 [connection signal="body_entered" from="Block" to="Block" method="_on_body_entered"]
+[connection signal="spawned" from="MultiplayerSpawner" to="." method="_on_multiplayer_spawner_spawned"]

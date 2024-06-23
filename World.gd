@@ -7,8 +7,57 @@ const GRID_SIZE = 16
 
 static var _instance: GameWorld = null
 
+@export var player_scene: PackedScene
+
 func _ready():
 	_instance = self if _instance == null else _instance
+
+	# We only need to spawn players on the server.
+	# TODO also not on singleplayer
+	if not multiplayer.is_server():
+		return
+
+	multiplayer.peer_connected.connect(add_player)
+	multiplayer.peer_disconnected.connect(del_player)
+
+	# Spawn already connected players.
+	for id in multiplayer.get_peers():
+		add_player(id)
+
+	# Spawn the local player unless this is a dedicated server export.
+	if not OS.has_feature("dedicated_server"):
+		add_player(1)
+
+func _exit_tree():
+	if not multiplayer.is_server():
+		return
+	multiplayer.peer_connected.disconnect(add_player)
+	multiplayer.peer_disconnected.disconnect(del_player)
+
+
+func add_player(id: int):
+	print("add player (on server) ", id)
+	var player = player_scene.instantiate()
+
+	player.position = Vector2(0, 0)
+	player.playerId = id
+
+	if id == 1:
+		player.playerName = "Host"
+		player.controller = PlayerKeyboardControllStrategy.new()
+	else:
+		player.playerName = str(id % 100)
+		player.controller = PlayerRemoteControllStrategy.new()
+
+	$PlayerSpawnTarget.add_child(player, true)
+
+
+func del_player(id: int):
+	if not $PlayerSpawnTarget.has_node(str(id)):
+		return
+	$PlayerSpawnTarget.get_node(str(id)).queue_free()
+
+
 
 static func get_tile_data_at(layer: int, position: Vector2i) -> TileData:
 	return _instance.tile_map.get_cell_tile_data(layer, position)
@@ -87,3 +136,15 @@ static func _spawn_plank_joints(position: Vector2i):
 			TILESET_TILES_PATHS_AND_OBJECTS, 
 			TILESET_PLANK_JOINT_COORDS
 		)
+
+
+func _on_multiplayer_spawner_spawned(player):
+	if player is Player:
+		if player.playerId == multiplayer.get_unique_id():
+			player.controller = PlayerKeyboardControllStrategy.new()
+			print("spawned own player")
+		else:
+			player.controller = PlayerRemoteControllStrategy.new()
+			player.get_node("Camera2D").set_enabled(false)
+			print("spawned other player: ", player.playerId % 100)
+

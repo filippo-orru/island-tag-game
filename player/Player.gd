@@ -5,11 +5,20 @@ const DEFAULT_SPEED = 200.0
 const PLANK_SPAWN_SPEED = 100.0
 const GRID_SIZE = GameWorld.GRID_SIZE
 
-var fromPos = Vector2i(0, 0)
-var targetPos = Vector2i(0, 0)
-var currentMovementSpeed = 0.0
+@export var fromPos = Vector2i(0, 0)
+@export var targetPos = Vector2i(0, 0)
+@export var currentMovementSpeed = 0.0
 
-var playerName: String
+@export var playerName: String
+
+# Set by the authority, synchronized on spawn.
+@export var playerId := 1 :
+	set(id):
+		playerId = id
+		# Give authority over the player input to the appropriate peer.
+		$PlayerInputSync.set_multiplayer_authority(id)
+
+
 var controller: PlayerControllStrategy
 
 func _ready():
@@ -23,7 +32,8 @@ func _input(event):
 
 func nextMove():
 	fromPos = targetPos
-	
+
+	# TODO multiplayer: other players are not animating
 	var changeVector = controller.get_target_vector(position)
 	if not test_move(Transform2D(0, position), changeVector * GRID_SIZE):
 		targetPos = fromPos + changeVector
