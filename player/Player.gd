@@ -32,7 +32,7 @@ var controller: PlayerControllStrategy
 func _ready():
 	fromPos = Vector2i(position / GRID_SIZE)
 	targetPos = Vector2i(position / GRID_SIZE)
-	#set_hunter(hunter)
+	set_hunter(hunter)
 
 func _input(event):
 	controller._input(event)
