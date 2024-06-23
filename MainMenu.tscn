@@ -32,13 +32,26 @@ offset_bottom = 557.0
 layout_mode = 2
 alignment = 1
 
+[node name="SinglePlayerButton" type="Button" parent="MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Single Player"
+
+[node name="SingleOrOnline" type="Label" parent="MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "
+--- or ---
+
+"
+horizontal_alignment = 1
+
 [node name="HostButton" type="Button" parent="MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Host Game"
 
 [node name="Label" type="Label" parent="MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "--- or ---
+text = "
+--- or ---
 Host IP:"
 horizontal_alignment = 1
 
@@ -67,5 +80,6 @@ unique_name_in_owner = true
 position = Vector2(576, 324)
 zoom = Vector2(2, 2)
 
+[connection signal="pressed" from="MainMenu/MarginContainer/VBoxContainer/SinglePlayerButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="MainMenu/MarginContainer/VBoxContainer/ConnectButton" to="." method="_on_connect_button_pressed"]
