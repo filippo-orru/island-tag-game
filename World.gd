@@ -32,12 +32,41 @@ func _exit_tree():
 	multiplayer.peer_connected.disconnect(add_player)
 	multiplayer.peer_disconnected.disconnect(del_player)
 
+func isSpawnPositionBlocked(spawnPosition: Vector2i, blockedPositions) -> bool:
+	for blockedPosition in blockedPositions:
+		var difference = spawnPosition - blockedPosition
+		var rectDistance = abs(difference.x) + abs(difference.y)
+		#print("rectDistance = ", rectDistance, " for ", spawnPosition, " to ", blockedPosition)
+		if rectDistance < 3: # 3 to make have space between players
+			return true
+	return false
 
 func add_player(id: int):
 	print("add player (on server) ", id)
 	var player = player_scene.instantiate()
 
-	player.position = Vector2(0, 0)
+	# Find free space to spawn by just rolling until we have a free position
+	var players = $PlayerSpawnTarget.get_children()
+	var blockedPositions = []
+	for otherPlayer in players:
+		blockedPositions.append(otherPlayer.fromPos)
+		if otherPlayer.fromPos != otherPlayer.targetPos:
+			blockedPositions.append(otherPlayer.targetPos)
+	#print("blocked positions = ", blockedPositions, " for players ", players)
+		
+	var spawnPosition = Vector2i.ZERO
+	var spreadRadius = 1
+	var rng = RandomNumberGenerator.new()
+	
+	
+	while isSpawnPositionBlocked(spawnPosition, blockedPositions):
+		spawnPosition = Vector2i(
+			rng.randi_range(-int(spreadRadius), int(spreadRadius)),
+			rng.randi_range(-int(spreadRadius), int(spreadRadius))
+			)
+		spreadRadius += 0.1
+	player.position = spawnPosition * GRID_SIZE
+	
 	player.playerId = id
 
 	if id == 1:
