@@ -30,6 +30,22 @@ properties/2/replication_mode = 1
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q8uy0"]
 size = Vector2(16, 16)
 
+[sub_resource type="Animation" id="Animation_fls1n"]
+resource_name = "tagged"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [144, 149]
+}
+
 [sub_resource type="Animation" id="Animation_fjsu6"]
 resource_name = "idle"
 length = 0.8
@@ -112,22 +128,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [12, 23]
-}
-
-[sub_resource type="Animation" id="Animation_fls1n"]
-resource_name = "tagged"
-length = 2.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.4),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [144, 149]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mtqx1"]
