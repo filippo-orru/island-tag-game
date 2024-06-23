@@ -5,14 +5,11 @@ const GRID_SIZE = 16
 
 @onready var tile_map: TileMap = $Map/Island
 
-static var _instance: GameWorld = null
 var isSinglePlayer: bool = false
 
 @export var player_scene: PackedScene
 
 func _ready():
-	_instance = self if _instance == null else _instance
-
 	# We only need to spawn players on the server.
 	if isSinglePlayer or not multiplayer.is_server():
 		return
@@ -59,16 +56,16 @@ func del_player(id: int):
 
 
 
-static func get_tile_data_at(layer: int, position: Vector2i) -> TileData:
-	return _instance.tile_map.get_cell_tile_data(layer, position)
+func get_tile_data_at(layer: int, position: Vector2i) -> TileData:
+	return tile_map.get_cell_tile_data(layer, position)
 
-static func get_custom_data_at(layer: int, position: Vector2i, custom_data_name: String) -> Variant:
+func get_custom_data_at(layer: int, position: Vector2i, custom_data_name: String) -> Variant:
 	var data = get_tile_data_at(layer, position)
 	if data == null:
 		return null
 	return data.get_custom_data(custom_data_name)
 
-static func isWalkable(position: Vector2i) -> bool:
+func isWalkable(position: Vector2i) -> bool:
 	return get_custom_data_at(1, position, "isWalkable") || get_custom_data_at(2, position, "isWalkable")
 
 const TILEMAP_LAYER_PLANKS = 2
@@ -79,14 +76,15 @@ const TILESET_PLANK_HORIZONTAL_COORDS = Vector2i(23, 8)
 const TILESET_PLANK_VERTICAL_COORDS = Vector2i(22, 7)
 const TILESET_PLANK_JOINT_COORDS = Vector2i(22, 8)
 
-static func spawn_plank(coming_from: Vector2i, position: Vector2i) -> void:
+@rpc("any_peer", "call_local", "reliable")
+func spawn_plank(coming_from: Vector2i, position: Vector2i) -> void:
 	var plankType
 	if coming_from.x != position.x:
 		plankType = TILESET_PLANK_HORIZONTAL_COORDS
 	else:
 		plankType = TILESET_PLANK_VERTICAL_COORDS
 	
-	_instance.tile_map.set_cell(TILEMAP_LAYER_PLANKS, position, TILESET_TILES_PATHS_AND_OBJECTS, plankType)
+	tile_map.set_cell(TILEMAP_LAYER_PLANKS, position, TILESET_TILES_PATHS_AND_OBJECTS, plankType)
 	
 	var neighbors = [
 		Vector2i(0, 0), # Self
@@ -100,14 +98,14 @@ static func spawn_plank(coming_from: Vector2i, position: Vector2i) -> void:
 		var coords = position + offset
 		_spawn_plank_joints(coords)
 
-static func is_plank(coords):
+func is_plank(coords):
 	return coords in [TILESET_PLANK_HORIZONTAL_COORDS, TILESET_PLANK_VERTICAL_COORDS, TILESET_PLANK_JOINT_COORDS]
 
-static func has_plank(position: Vector2i) -> bool:
-	var coords = _instance.tile_map.get_cell_atlas_coords(TILEMAP_LAYER_PLANKS, position)
+func has_plank(position: Vector2i) -> bool:
+	var coords = tile_map.get_cell_atlas_coords(TILEMAP_LAYER_PLANKS, position)
 	return is_plank(coords)
 
-static func _spawn_plank_joints(position: Vector2i):
+func _spawn_plank_joints(position: Vector2i):
 	if not has_plank(position):
 		return
 	
@@ -130,7 +128,7 @@ static func _spawn_plank_joints(position: Vector2i):
 		plankAtLastNeighbor = hasPlank
 	
 	if shouldBeAJoint:
-		_instance.tile_map.set_cell(
+		tile_map.set_cell(
 			TILEMAP_LAYER_PLANKS, 
 			position, 
 			TILESET_TILES_PATHS_AND_OBJECTS, 

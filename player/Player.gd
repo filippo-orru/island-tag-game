@@ -19,6 +19,7 @@ const GRID_SIZE = GameWorld.GRID_SIZE
 		$PlayerInputSync.set_multiplayer_authority(id)
 
 
+@onready var world: GameWorld = get_parent().get_parent()
 var controller: PlayerControllStrategy
 
 func _ready():
@@ -37,8 +38,9 @@ func nextMove():
 	if not test_move(Transform2D(0, position), changeVector * GRID_SIZE):
 		targetPos = fromPos + changeVector
 	
-	if not GameWorld.isWalkable(targetPos):
-		GameWorld.spawn_plank(fromPos, targetPos)
+	if not world.isWalkable(targetPos):
+		
+		world.spawn_plank.rpc(fromPos, targetPos)
 		currentMovementSpeed = PLANK_SPAWN_SPEED
 	else:
 		currentMovementSpeed = DEFAULT_SPEED

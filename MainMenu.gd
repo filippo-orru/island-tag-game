@@ -65,31 +65,6 @@ func _input(event):
 	if event.is_action("ui_filedialog_refresh") and Input.is_action_just_pressed("ui_filedialog_refresh"):
 		change_level.call_deferred(load("res://world.tscn"))
 
-#@rpc("any_peer", "call_local") # Add "call_local" if you also want to spawn a player from the server
-#func add_player(id):
-	#var player = player.instantiate()
-	#player.set_multiplayer_authority(id)
-	#
-	#player.position = Vector2(0, 0) # TODO based on ID
-	#print(get_tree())
-	#
-	#if id == multiplayer.get_unique_id():
-		#player.playerName = "Me"
-		#player.controller = PlayerKeyboardControllStrategy.new()
-	#
-	#else:
-		#player.playerName = "Player 2"
-		#player.get_node("Camera2D").set_enabled(false)
-		#player.controller = PlayerRemoteControllStrategy.new()
-#
-	#
-	#%SpawnTarget.add_child(player)
-#
-##@rpc("any_peer")
-#func remove_player(id):
-	#if %SpawnTarget.get_node(str(id)):
-		#%SpawnTarget.get_node(str(id)).queue_free()
-
 func server_offline():
 	%MainMenu.show()
 	for child in %LevelSpawnTarget.get_children():
