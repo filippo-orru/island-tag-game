@@ -108,7 +108,7 @@ func _process(delta):
 
 
 func _on_area_entered(area):
-	if not hunter:
+	if not hunter or tagged:
 		return
 		
 	var taggedPlayer = area.get_parent()
@@ -119,16 +119,16 @@ func _on_area_entered(area):
 	#  [ ] taggedPlayer also gets hunter
 	#  [x] switch hunter is switche
 	print(self.playerName, " tagged ", taggedPlayer.playerName)
-	taggedPlayer.tag.call_deferred()
+	taggedPlayer.tagged = true
+	taggedPlayer.hunter = true
 	hunter = false
 	score += 1
+	taggedPlayer.tag.call_deferred()
 	
 func tag():
-	tagged = true
 	$Camera2D.shake()
 	await get_tree().create_timer(1.0).timeout
 	tagged = false
-	hunter = true
 	
 @rpc("any_peer", "call_local", "reliable")
 func setName(playerName):
