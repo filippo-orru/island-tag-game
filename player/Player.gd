@@ -11,14 +11,21 @@ const RUNNER_PATCH_RECT = Rect2(0, 272, 48, 48)
 @export var fromPos = Vector2i(0, 0)
 @export var targetPos = Vector2i(0, 0)
 @export var currentMovementSpeed = 0.0
-@export var hunter = false
+@export var hunter := false:
+	set(value):
+		hunter = value
+		if hunter:
+			$Control/MarginContainer/NinePatchRect.region_rect = HUNTER_PATCH_RECT
+		else:
+			$Control/MarginContainer/NinePatchRect.region_rect = RUNNER_PATCH_RECT
+			
 @export var tagged = false
 @export var score = 0
 
 @export var playerName: String
 
 # Set by the authority, synchronized on spawn.
-@export var playerId := 1 :
+@export var playerId := 1:
 	set(id):
 		playerId = id
 		# Give authority over the player input to the appropriate peer.
@@ -32,7 +39,6 @@ var controller: PlayerControllStrategy
 func _ready():
 	fromPos = Vector2i(position / GRID_SIZE)
 	targetPos = Vector2i(position / GRID_SIZE)
-	set_hunter(hunter)
 
 func _input(event):
 	controller._input(event)
@@ -113,23 +119,27 @@ func _on_area_entered(area):
 	#  [ ] taggedPlayer also gets hunter
 	#  [x] switch hunter is switche
 	print(self.playerName, " tagged ", taggedPlayer.playerName)
-	taggedPlayer.tag.call_deferred()
-	set_hunter(false)
-	score += 1
 	
-func tag():
+	tag.rpc(taggedPlayer.playerId)
+	
 	tagged = true
 	$Camera2D.shake()
 	await get_tree().create_timer(1.0).timeout
 	tagged = false
-	set_hunter(true)
+	
+	#taggedPlayer.tag.call_deferred()
+	#set_hunter(false)
+	#score += 1
 
-func set_hunter(is_hunter: bool):
-	hunter = is_hunter
-	if hunter:
-		$Control/MarginContainer/NinePatchRect.region_rect = HUNTER_PATCH_RECT
-	else:
-		$Control/MarginContainer/NinePatchRect.region_rect = RUNNER_PATCH_RECT
+@rpc("reliable")
+func tag(taggedPlayerId):
+	score += 1
+	for player in world.player_spawn_target.get_children():
+		if player.playerId == taggedPlayerId:
+			player.hunter = true
+
+	hunter = false
+
 	
 @rpc("any_peer", "call_local", "reliable")
 func setName(playerName):
