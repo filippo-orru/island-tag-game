@@ -34,6 +34,7 @@ func _on_connect_button_pressed():
 
 func load_game():
 	%MainMenu.hide()
+	%MenuCamera.set_enabled(false)
 	%LocalScenes.add_child(world.instantiate())
 	add_player.rpc(multiplayer.get_unique_id())
 
@@ -67,3 +68,22 @@ func server_offline():
 	%Menu.show()
 	if %LocalScenes.get_child(0):
 		%LocalScenes.get_child(0).queue_free()
+
+
+func _on_singleplayer_button_pressed():
+	%MainMenu.hide()
+	%MenuCamera.set_enabled(false)
+	%SpawnTarget.add_child(world.instantiate())
+	
+	var player1 = player.instantiate()
+	player1.position = Vector2(0, 0)
+	player1.playerName = "Me"
+	player1.controller = PlayerKeyboardControllStrategy.new()
+	%SpawnTarget.add_child(player1)
+	
+	var bot1 = player.instantiate()
+	bot1.position = Vector2(32, 32)
+	bot1.playerName = "Bot 1"
+	bot1.get_node("Camera2D").set_enabled(false)
+	bot1.controller = PlayerBotControllStrategy.new()
+	%SpawnTarget.add_child(bot1)
