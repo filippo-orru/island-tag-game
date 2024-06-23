@@ -33,12 +33,20 @@ func _input(event):
 func nextMove():
 	fromPos = targetPos
 
-	# TODO multiplayer: other players are not animating
 	var changeVector = controller.get_target_vector(position)
 	if not test_move(Transform2D(0, position), changeVector * GRID_SIZE):
 		targetPos = fromPos + changeVector
+	
+	if not GameWorld.isWalkable(targetPos):
+		GameWorld.spawn_plank(fromPos, targetPos)
+		currentMovementSpeed = PLANK_SPAWN_SPEED
 	else:
-		changeVector = Vector2i.ZERO
+		currentMovementSpeed = DEFAULT_SPEED
+
+func _process(delta):
+	# Animation
+	
+	var changeVector = targetPos - fromPos
 	
 	if changeVector.x < 0:
 		$AnimationPlayer.play("walk_left")
@@ -51,18 +59,15 @@ func nextMove():
 	else:
 		$AnimationPlayer.stop()
 	
-	if not GameWorld.isWalkable(targetPos):
-		GameWorld.spawn_plank(fromPos, targetPos)
-		currentMovementSpeed = PLANK_SPAWN_SPEED
-	else:
-		currentMovementSpeed = DEFAULT_SPEED
-
-func _process(delta):
+	# Movement
+	
 	if fromPos.x != targetPos.x:
 		# Move left/right
 		position.x = move_toward(position.x, targetPos.x * GRID_SIZE, delta * currentMovementSpeed)
+		
 		if position.x == targetPos.x * GRID_SIZE:
 			nextMove()
+			
 	elif fromPos.y != targetPos.y:
 		# Move top/down
 		position.y = move_toward(position.y, targetPos.y * GRID_SIZE, delta * currentMovementSpeed)
