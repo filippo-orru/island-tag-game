@@ -55,7 +55,7 @@ text = "
 Host IP:"
 horizontal_alignment = 1
 
-[node name="IPAddress" type="LineEdit" parent="MainMenu/MarginContainer/VBoxContainer"]
+[node name="IpAddress" type="LineEdit" parent="MainMenu/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 placeholder_text = "1.2.3.4"

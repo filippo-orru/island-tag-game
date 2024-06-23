@@ -16,6 +16,11 @@ func _process(delta):
 func _on_host_button_pressed():
 	var peer = ENetMultiplayerPeer.new()
 	peer.create_server(9064)
+
+	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
+		OS.alert("Failed to start multiplayer server.")
+		return
+
 	multiplayer.multiplayer_peer = peer
 
 	multiplayer.peer_disconnected.connect(remove_player)
@@ -25,7 +30,15 @@ func _on_host_button_pressed():
 
 func _on_connect_button_pressed():
 	var peer = ENetMultiplayerPeer.new()
-	peer.create_client(%IPAddress.text, 9064)
+	var ip = %IpAddress.text
+	if ip == "":
+		ip = "localhost"
+	peer.create_client(ip, 9064)
+
+	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
+		OS.alert("Failed to start multiplayer client.")
+		return
+
 	multiplayer.multiplayer_peer = peer
 
 	multiplayer.connected_to_server.connect(load_game) # Loads only if connected to a server
