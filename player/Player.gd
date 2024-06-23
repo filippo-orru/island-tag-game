@@ -9,6 +9,7 @@ const GRID_SIZE = GameWorld.GRID_SIZE
 @export var targetPos = Vector2i(0, 0)
 @export var currentMovementSpeed = 0.0
 var hunter = false
+var tagged = false
 
 @export var playerName: String
 
@@ -34,6 +35,8 @@ func _input(event):
 
 func nextMove():
 	fromPos = targetPos
+	if tagged:
+		return
 
 	var changeVector = controller.get_target_vector(position)
 	if not test_move(Transform2D(0, position), changeVector * GRID_SIZE):
@@ -61,6 +64,8 @@ func _process(delta):
 		$AnimationPlayer.play("walk_up")
 	elif changeVector.y > 0:
 		$AnimationPlayer.play("walk_down")
+	elif tagged:
+		$AnimationPlayer.play("tagged")
 	else:
 		$AnimationPlayer.stop()
 	
@@ -94,3 +99,12 @@ func _on_area_entered(area):
 	#  - taggedPlayer also gets hunter
 	#  - hunter is switche
 	print(self.playerName, " tagged ", taggedPlayer.playerName)
+	taggedPlayer.tag.call_deferred()
+	hunter = false
+	
+func tag():
+	tagged = true
+	await get_tree().create_timer(1.0).timeout
+	tagged = false
+	hunter = true
+	
