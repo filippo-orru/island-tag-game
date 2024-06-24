@@ -42,7 +42,7 @@ func _on_connect_button_pressed():
 
 
 func load_game(loadMap: bool, singlePlayer = false):
-	%MainMenu.hide()
+	_hide_menu()
 
 	# Only change level on the server.
 	# Clients will instantiate the level via the spawner.
@@ -70,7 +70,7 @@ func _input(event):
 		change_level.call_deferred(load("res://world.tscn"))
 
 func server_offline():
-	%MainMenu.show()
+	_show_menu()
 	for child in %LevelSpawnTarget.get_children():
 		%LevelSpawnTarget.remove_child(child)
 		child.queue_free()
@@ -97,3 +97,11 @@ func singlePlayer_PlayerInit(world: GameWorld):
 	botController.player = bot1
 	bot1.controller = botController
 	world.spawn_player(bot1)
+
+func _show_menu():
+	%MainMenu.show()
+	%MenuMusic.play(0)
+
+func _hide_menu():
+	%MainMenu.hide()
+	%MenuMusic.stop()

@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://bjekja44xol4g"]
+[gd_scene load_steps=6 format=3 uid="uid://bjekja44xol4g"]
 
 [ext_resource type="Script" path="res://MainMenu.gd" id="1_p5tuy"]
 [ext_resource type="PackedScene" uid="uid://c4ll6sfrlstyu" path="res://player/player.tscn" id="2_5ul1v"]
 [ext_resource type="PackedScene" uid="uid://bdlafsg6ckc8h" path="res://world.tscn" id="3_g0kqh"]
+[ext_resource type="AudioStream" uid="uid://2cywltb0au63" path="res://assets/audio/Island Fetch Menu.mp3" id="4_6tbve"]
+[ext_resource type="Script" path="res://BackgroundMusic.gd" id="5_lrg61"]
 
 [node name="GlobalScene" type="Node2D"]
 script = ExtResource("1_p5tuy")
@@ -82,6 +84,14 @@ placeholder_text = "1.2.3.4"
 [node name="ConnectButton" type="Button" parent="MenuCanvas/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Join Game"
+
+[node name="MenuMusic" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("4_6tbve")
+volume_db = -6.0
+autoplay = true
+script = ExtResource("5_lrg61")
+endSeconds = 195.0
 
 [connection signal="pressed" from="MenuCanvas/MainMenu/MarginContainer/VBoxContainer/SinglePlayerButton" to="." method="_on_singleplayer_button_pressed"]
 [connection signal="pressed" from="MenuCanvas/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
