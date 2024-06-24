@@ -3,3 +3,6 @@
 
 # IntelliJ
 .idea/
+
+out/
+!out/.gitkeep
