@@ -15,7 +15,7 @@ var isSinglePlayer: bool = false
 @export var menu_coins_container: Control
 @export var menu_coins_scene: PackedScene = load("res://assets/items/menu_coin_sprite.tscn")
 
-@export var sound_on = true
+@export var sound_on: bool = true
 
 func _ready():
 	# We only need to spawn players on the server.
@@ -23,6 +23,22 @@ func _ready():
 		_ready_multiplayer()
 	
 	_generate_islands(random_seed)
+	
+func _process(delta):
+	var timestamp = Time.get_ticks_msec()
+	
+	var i = 0
+	var remove_at = []
+	for plank in destroyingPlanks:
+		if timestamp - plank['timestamp'] > plankDestroyAnimationMs:
+			remove_at.append(i)
+			tile_map.set_cell(TILEMAP_LAYER_PLANKS, plank['coords'])
+		else:
+			tile_map.set_cell(TILEMAP_LAYER_PLANKS, plank['coords'], TILESET_TILES_PATHS_AND_OBJECTS, TILESET_PLANK_EXPLODE_COORDS)
+		i += 1
+	
+	for remove in remove_at:
+		destroyingPlanks.remove_at(remove)
 
 func _ready_multiplayer():
 	multiplayer.peer_connected.connect(add_player)
@@ -170,6 +186,7 @@ const TILESET_TILES_PATHS_AND_OBJECTS = 3
 const TILESET_PLANK_HORIZONTAL_COORDS = Vector2i(23, 8)
 const TILESET_PLANK_VERTICAL_COORDS = Vector2i(22, 7)
 const TILESET_PLANK_JOINT_COORDS = Vector2i(22, 8)
+const TILESET_PLANK_EXPLODE_COORDS = Vector2i(23, 6)
 
 # Index of the island pattern (foreground, background/decoration)
 const ISLANDS = [
@@ -266,10 +283,28 @@ func _on_multiplayer_spawner_spawned(player):
 			print("spawned other player: ", player.playerId % 100)
 
 func update_coins(count: int):
-	var children = menu_coins_container.get_children()
+	var children: Array[Node] = menu_coins_container.get_children()
 	if len(children) < count:
 		for i in range(count - len(children)):
 			menu_coins_container.add_child(menu_coins_scene.instantiate())
 	elif len(children) > count:
 		for i in range(len(children) - count):
 			menu_coins_container.remove_child(children[i])
+
+var destroyingPlanks: Array = []
+const plankDestroyAnimationMs = 300
+
+@rpc("any_peer", "call_local", "reliable")
+func destroy_planks(coords: Vector2i, radius: int):
+	var timestamp = Time.get_ticks_msec()
+	for x in range(-radius, radius + 1):
+		for y in range(-radius, radius + 1):
+			var tile_coords: Vector2i = coords + Vector2i(x, y)
+			if has_plank(tile_coords) and is_in_radius(Vector2(x, y), radius):
+				destroyingPlanks.append({
+					'coords': tile_coords,
+					'timestamp': timestamp
+				})
+
+func is_in_radius(pos: Vector2, radius: int) -> bool:
+	return pos.length() <= radius

@@ -1,10 +1,10 @@
 [gd_resource type="TileSet" load_steps=15 format=3 uid="uid://81ugtyb0pa7t"]
 
-[ext_resource type="Texture2D" uid="uid://c40qpge85d4v3" path="res://assets/tilemaps/ground.png" id="1_cuvny"]
-[ext_resource type="Texture2D" uid="uid://cknf61do5wkr2" path="res://assets/tilemaps/houses.png" id="2_s2rl3"]
-[ext_resource type="Texture2D" uid="uid://dv6742th136e3" path="res://assets/tilemaps/paths-and-objects.png" id="3_ctbwt"]
-[ext_resource type="Texture2D" uid="uid://o066tubtab3l" path="res://assets/tilemaps/plants.png" id="4_0t1ah"]
-[ext_resource type="Texture2D" uid="uid://cln0eobajrk83" path="res://assets/tilemaps/transport.png" id="5_73nv2"]
+[ext_resource type="Texture2D" uid="uid://c40qpge85d4v3" path="res://assets/tilemaps/ground.png" id="1_wiyfn"]
+[ext_resource type="Texture2D" uid="uid://cknf61do5wkr2" path="res://assets/tilemaps/houses.png" id="2_ghjk5"]
+[ext_resource type="Texture2D" uid="uid://dv6742th136e3" path="res://assets/tilemaps/paths-and-objects.png" id="3_3d2wg"]
+[ext_resource type="Texture2D" uid="uid://o066tubtab3l" path="res://assets/tilemaps/plants.png" id="4_i6ckk"]
+[ext_resource type="Texture2D" uid="uid://cln0eobajrk83" path="res://assets/tilemaps/transport.png" id="5_4jbg5"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_kmv60"]
 tile_data = PackedInt32Array(65536, 2686976, 13, 131072, 2818048, 11, 196608, 2818048, 11, 262144, 2818048, 11, 327680, 2818048, 11, 393216, 2686976, 14, 1, 2686976, 13, 65537, 2818048, 12, 131073, 2490368, 13, 196609, 2621440, 11, 262145, 2621440, 11, 327681, 2490368, 14, 393217, 2752512, 10, 2, 2752512, 12, 65538, 2490368, 13, 131074, 2621440, 12, 196610, 3604480, 18, 262146, 3604480, 18, 327682, 2555904, 10, 393218, 2818048, 10, 458754, 2686976, 14, 3, 2752512, 12, 65539, 2555904, 12, 131075, 3604480, 18, 196611, 3604480, 18, 262147, 3604480, 18, 327683, 2621440, 10, 393219, 2490368, 14, 458755, 2752512, 10, 4, 2752512, 12, 65540, 2555904, 12, 131076, 3604480, 18, 196612, 3604480, 18, 262148, 3604480, 18, 327684, 3604480, 18, 393220, 2555904, 10, 458756, 2752512, 10, 5, 2752512, 12, 65541, 2555904, 12, 131077, 3604480, 18, 196613, 3604480, 18, 262149, 3604480, 18, 327685, 3604480, 18, 393221, 2555904, 10, 458757, 2752512, 10, 6, 2752512, 12, 65542, 2555904, 13, 131078, 2490368, 12, 196614, 3604480, 18, 262150, 3604480, 18, 327686, 2490368, 10, 393222, 2555904, 14, 458758, 2752512, 10, 7, 2752512, 13, 65543, 2686976, 12, 131079, 2555904, 13, 196615, 2490368, 11, 262151, 2490368, 11, 327687, 2555904, 14, 393223, 2686976, 10, 458759, 2752512, 14, 65544, 2752512, 13, 131080, 2686976, 11, 196616, 2686976, 11, 262152, 2686976, 11, 327688, 2686976, 11, 393224, 2752512, 14)
@@ -20,7 +20,7 @@ tile_data = PackedInt32Array(65536, 3604480, 18, 131072, 3604480, 18, 196608, 36
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xy7ml"]
 resource_name = "ground"
-texture = ExtResource("1_cuvny")
+texture = ExtResource("1_wiyfn")
 0:0/0 = 0
 1:0/0 = 0
 2:0/0 = 0
@@ -1438,7 +1438,7 @@ texture = ExtResource("1_cuvny")
 10:24/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cyg0a"]
-texture = ExtResource("2_s2rl3")
+texture = ExtResource("2_ghjk5")
 1:0/0 = 0
 2:0/0 = 0
 3:0/0 = 0
@@ -3772,7 +3772,7 @@ texture = ExtResource("2_s2rl3")
 41:36/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6rdml"]
-texture = ExtResource("3_ctbwt")
+texture = ExtResource("3_3d2wg")
 0:0/0 = 0
 1:0/0 = 0
 2:0/0 = 0
@@ -4672,9 +4672,10 @@ texture = ExtResource("3_ctbwt")
 87:23/0 = 0
 88:23/0 = 0
 89:23/0 = 0
+23:6/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ftxfb"]
-texture = ExtResource("4_0t1ah")
+texture = ExtResource("4_i6ckk")
 0:0/0 = 0
 1:0/0 = 0
 2:0/0 = 0
@@ -6292,7 +6293,7 @@ texture = ExtResource("4_0t1ah")
 119:27/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jgtfh"]
-texture = ExtResource("5_73nv2")
+texture = ExtResource("5_4jbg5")
 11:0/0 = 0
 12:0/0 = 0
 13:0/0 = 0

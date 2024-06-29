@@ -21,7 +21,10 @@ const RUNNER_PATCH_RECT = Rect2(0, 272, 48, 48)
 		
 @export var tagged = false
 @export var score = 0
-var coins = 0
+var coins = 0:
+	set(value):
+		coins = value
+		world.update_coins(coins)
 
 @export var playerName: String
 
@@ -34,8 +37,12 @@ var coins = 0
 
 
 @onready var world: GameWorld = get_parent().get_parent()
-@onready var playerTag = $Control/MarginContainer/MarginContainer2/CenterContainer/PlayerTag
-var controller: PlayerControllStrategy
+@onready var playerTag = %PlayerTag
+var controller: PlayerControllStrategy:
+	set(value):
+		controller = value
+		if controller is PlayerKeyboardControllStrategy:
+			controller.useItem = useItem
 
 func _ready():
 	fromPos = Vector2i(position / GRID_SIZE)
@@ -137,4 +144,8 @@ func setName(new):
 
 func collect_coin(coin):
 	coins += 1
-	world.update_coins(coins)
+
+func useItem():
+	if coins > 0:
+		world.destroy_planks(self.fromPos, 4)
+		coins -= 1
