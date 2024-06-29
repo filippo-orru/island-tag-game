@@ -75,7 +75,7 @@ shape = SubResource("WorldBoundaryShape2D_liwvk")
 [node name="CoinsSpawnTarget" type="Node2D" parent="Map"]
 
 [node name="CoinsSpawner" type="MultiplayerSpawner" parent="Map"]
-_spawnable_scenes = PackedStringArray("res://assets/items/Coin.tscn")
+_spawnable_scenes = PackedStringArray("res://assets/items/coin.tscn")
 spawn_path = NodePath("../CoinsSpawnTarget")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]

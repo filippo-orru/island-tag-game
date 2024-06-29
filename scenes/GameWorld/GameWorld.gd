@@ -99,30 +99,33 @@ func _generate_islands(seed: int):
 	var random = RandomNumberGenerator.new()
 	random.seed = seed
 
-	var worldWidth = ($Map/Boundary/BoundaryCollider/Right.shape.distance + $Map/Boundary/BoundaryCollider/Left.shape.distance) / GRID_SIZE
-	var worldHeight = ($Map/Boundary/BoundaryCollider/Top.shape.distance + $Map/Boundary/BoundaryCollider/Bottom.shape.distance) / GRID_SIZE
+	var worldWidth = abs($Map/Boundary/BoundaryCollider/Right.shape.distance + $Map/Boundary/BoundaryCollider/Left.shape.distance) / GRID_SIZE
+	var worldHeight = abs($Map/Boundary/BoundaryCollider/Top.shape.distance + $Map/Boundary/BoundaryCollider/Bottom.shape.distance) / GRID_SIZE
 	
 	var worldRadius = min(worldWidth / 2, worldHeight / 2) - 10
 	
-	var patternIndex = TILESET_PATTERN_ISLANDS[random.randi_range(0, len(TILESET_PATTERN_ISLANDS) - 1)]
-	
-	var islandPattern = tile_map.tile_set.get_pattern(patternIndex[0])
-	var islandBackgroundPattern = tile_map.tile_set.get_pattern(patternIndex[1])
-	
-	var islandCoords = Vector2i(0, 0)
-	while not _has_space_for_island(islandCoords):
-		islandCoords = Vector2i(
-			random.randi_range(-worldRadius, worldRadius),
-			random.randi_range(-worldRadius, worldRadius)
-		)
-	
-	tile_map.set_pattern(TILEMAP_LAYER_ISLAND, islandCoords, islandPattern)
-	tile_map.set_pattern(TILEMAP_LAYER_ISLAND_BACKDROP, islandCoords + Vector2i(1, 1), islandBackgroundPattern)
-	
-	var coin = coin_scene.instantiate()
-	coin.position = Vector2((islandCoords + Vector2i(4, 4)) * GRID_SIZE)
-	
-	$Map/CoinsSpawnTarget.add_child(coin, true)
+	for _index in range(4):
+		var island = ISLANDS[random.randi_range(0, len(ISLANDS) - 1)]
+		var patternIndex = island['tileset_pattern']
+		
+		var islandPattern = tile_map.tile_set.get_pattern(patternIndex[0])
+		var islandBackgroundPattern = tile_map.tile_set.get_pattern(patternIndex[1])
+		
+		var islandCoords = Vector2i(0, 0)
+		while not _has_space_for_island(islandCoords):
+			islandCoords = Vector2i(
+				random.randi_range(-worldRadius, worldRadius),
+				random.randi_range(-worldRadius, worldRadius)
+			)
+		
+		tile_map.set_pattern(TILEMAP_LAYER_ISLAND, islandCoords, islandPattern)
+		tile_map.set_pattern(TILEMAP_LAYER_ISLAND_BACKDROP, islandCoords + Vector2i(1, 1), islandBackgroundPattern)
+		
+		var coin = coin_scene.instantiate()
+		coin.position = Vector2((islandCoords + island['coin_offset']) * GRID_SIZE)
+		
+		$Map/CoinsSpawnTarget.add_child(coin, true)
+		
 
 func _has_space_for_island(coords: Vector2i):
 	for offsetX in range(10):
@@ -167,9 +170,15 @@ const TILESET_PLANK_VERTICAL_COORDS = Vector2i(22, 7)
 const TILESET_PLANK_JOINT_COORDS = Vector2i(22, 8)
 
 # Index of the island pattern (foreground, background/decoration)
-const TILESET_PATTERN_ISLANDS = [
-	[0, 2],
-	[1, 3],
+const ISLANDS = [
+	{
+		'tileset_pattern': [0, 2],
+		'coin_offset': Vector2i(5, 4),
+	},
+	{
+		'tileset_pattern': [1, 3],
+		'coin_offset': Vector2i(3, 4),
+	},
 ]
 
 var spawnedPlanks = []
