@@ -8,6 +8,9 @@ const directions = [Vector2i.UP, Vector2i.DOWN, Vector2i.RIGHT, Vector2i.LEFT]
 var _rng = RandomNumberGenerator.new()
 var lastDirection = Vector2i.ZERO
 
+func _input(_coords):
+	pass
+
 func get_target_vector(position: Vector2i) -> Vector2i:
 	if not player.hunter:
 		var hunterDirection: Vector2i = targetPlayer.targetPos - targetPlayer.fromPos

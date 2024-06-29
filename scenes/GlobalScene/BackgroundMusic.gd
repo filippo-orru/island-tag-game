@@ -1,5 +1,7 @@
 extends AudioStreamPlayer
 
+@export var autoPlay: bool = true
+
 @export var endSeconds: float
 @export var initialDbFade: bool = true
 @export var initialDbFadeAmount: float = 6
@@ -8,11 +10,14 @@ extends AudioStreamPlayer
 @onready var initialDb = self.volume_db
 @onready var startFadeTimestamp = Time.get_ticks_msec()
 
+func visible():
+	if get_parent().sound_on:
+		self.play(0.0)
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_set_db()
-	self.play(0.0)
-
+	visible()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

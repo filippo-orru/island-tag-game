@@ -1,21 +1,30 @@
-[gd_scene load_steps=6 format=3 uid="uid://bjekja44xol4g"]
+[gd_scene load_steps=11 format=3 uid="uid://bjekja44xol4g"]
 
-[ext_resource type="Script" path="res://MainMenu.gd" id="1_p5tuy"]
-[ext_resource type="PackedScene" uid="uid://c4ll6sfrlstyu" path="res://player/player.tscn" id="2_5ul1v"]
-[ext_resource type="PackedScene" uid="uid://bdlafsg6ckc8h" path="res://world.tscn" id="3_g0kqh"]
-[ext_resource type="AudioStream" uid="uid://2cywltb0au63" path="res://assets/audio/Island Fetch Menu.mp3" id="4_6tbve"]
-[ext_resource type="Script" path="res://BackgroundMusic.gd" id="5_lrg61"]
+[ext_resource type="Script" path="res://scenes/GlobalScene/GlobalScene.gd" id="1_jamt4"]
+[ext_resource type="PackedScene" uid="uid://c4ll6sfrlstyu" path="res://player/player.tscn" id="2_y2vov"]
+[ext_resource type="Texture2D" uid="uid://c2yhpjoomvcrl" path="res://assets/icons/sound-on.png" id="4_wqa1k"]
+[ext_resource type="Texture2D" uid="uid://dcekpy7campif" path="res://assets/icons/sound-on-pressed.png" id="5_yyfkr"]
+[ext_resource type="Texture2D" uid="uid://crfdunyqbd06n" path="res://assets/icons/sound-on-hover.png" id="6_5iq6e"]
+[ext_resource type="Script" path="res://scenes/GlobalScene/SoundButton.gd" id="7_gu4an"]
+[ext_resource type="AudioStream" uid="uid://2cywltb0au63" path="res://assets/audio/Island Fetch Menu.mp3" id="7_uxfij"]
+[ext_resource type="Script" path="res://scenes/GlobalScene/BackgroundMusic.gd" id="8_rqmok"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_i1kib"]
+device = -1
+keycode = 77
+unicode = 109
+
+[sub_resource type="Shortcut" id="Shortcut_85brp"]
+events = [SubResource("InputEventKey_i1kib")]
 
 [node name="GlobalScene" type="Node2D"]
-script = ExtResource("1_p5tuy")
-player = ExtResource("2_5ul1v")
-world = ExtResource("3_g0kqh")
+script = ExtResource("1_jamt4")
+player = ExtResource("2_y2vov")
 
 [node name="LevelSpawnTarget" type="Node2D" parent="."]
 unique_name_in_owner = true
 
 [node name="LevelSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://world.tscn")
 spawn_path = NodePath("../LevelSpawnTarget")
 
 [node name="MenuCanvas" type="CanvasLayer" parent="."]
@@ -24,11 +33,9 @@ follow_viewport_enabled = true
 [node name="MainMenu" type="Control" parent="MenuCanvas"]
 unique_name_in_owner = true
 layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -85,14 +92,36 @@ placeholder_text = "1.2.3.4"
 layout_mode = 2
 text = "Join Game"
 
+[node name="SoundButton" type="TextureButton" parent="MenuCanvas/MainMenu"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -110.0
+offset_right = -36.0
+offset_bottom = -46.0
+grow_horizontal = 0
+grow_vertical = 0
+shortcut = SubResource("Shortcut_85brp")
+texture_normal = ExtResource("4_wqa1k")
+texture_pressed = ExtResource("5_yyfkr")
+texture_hover = ExtResource("6_5iq6e")
+ignore_texture_size = true
+stretch_mode = 4
+script = ExtResource("7_gu4an")
+
 [node name="MenuMusic" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true
-stream = ExtResource("4_6tbve")
+stream = ExtResource("7_uxfij")
 volume_db = -6.0
-autoplay = true
-script = ExtResource("5_lrg61")
+script = ExtResource("8_rqmok")
 endSeconds = 195.0
 
 [connection signal="pressed" from="MenuCanvas/MainMenu/MarginContainer/VBoxContainer/SinglePlayerButton" to="." method="_on_singleplayer_button_pressed"]
 [connection signal="pressed" from="MenuCanvas/MainMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="MenuCanvas/MainMenu/MarginContainer/VBoxContainer/ConnectButton" to="." method="_on_connect_button_pressed"]
+[connection signal="pressed" from="MenuCanvas/MainMenu/SoundButton" to="." method="_on_sound_button_pressed"]
+[connection signal="pressed" from="MenuCanvas/MainMenu/SoundButton" to="MenuCanvas/MainMenu/SoundButton" method="_on_pressed"]

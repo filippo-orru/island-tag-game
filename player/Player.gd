@@ -131,5 +131,5 @@ func tag():
 	tagged = false
 	
 @rpc("any_peer", "call_local", "reliable")
-func setName(playerName):
-	self.playerName = playerName
+func setName(new):
+	self.playerName = new
