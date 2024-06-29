@@ -26,9 +26,10 @@ properties/0/path = NodePath(".:random_seed")
 properties/0/spawn = true
 properties/0/replication_mode = 2
 
-[node name="GameWorld" type="Node2D"]
+[node name="GameWorld" type="Node2D" node_paths=PackedStringArray("menu_coins_container")]
 script = ExtResource("1_qgtc0")
 player_scene = ExtResource("2_wqumc")
+menu_coins_container = NodePath("IngameUi/Control/Grid")
 
 [node name="Map" type="Node2D" parent="."]
 position = Vector2(-8, -8)
@@ -84,6 +85,9 @@ spawn_path = NodePath("../PlayerSpawnTarget")
 
 [node name="PlayerSpawnTarget" type="Node2D" parent="."]
 
+[node name="Player" parent="PlayerSpawnTarget" instance_placeholder="res://player/player.tscn"]
+position = Vector2(2.08165e-12, 2.08165e-12)
+
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_7yqwk")
 
@@ -93,5 +97,24 @@ volume_db = -6.0
 script = ExtResource("5_jmh54")
 autoPlay = false
 endSeconds = 99.0
+
+[node name="IngameUi" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="IngameUi"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Grid" type="GridContainer" parent="IngameUi/Control"]
+layout_mode = 1
+offset_left = 23.0
+offset_top = 20.0
+offset_right = 77.0
+offset_bottom = 60.0
+scale = Vector2(1.2, 1.2)
+columns = 5
 
 [connection signal="spawned" from="MultiplayerSpawner" to="." method="_on_multiplayer_spawner_spawned"]

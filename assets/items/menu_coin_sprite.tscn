@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://budrgif0kt6ly"]
+
+[ext_resource type="Script" path="res://assets/items/MenuCoinSprite.gd" id="2_7od8l"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7kom4"]
+load_path = "res://.godot/imported/coin.png-8bbcb72414c4c7281612cecc548f7ec3.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_03y0v"]
+resource_local_to_scene = true
+atlas = SubResource("CompressedTexture2D_7kom4")
+region = Rect2(2.08165e-12, 2.08165e-12, 16, 16)
+
+[node name="CoinSprite" type="TextureRect"]
+texture = SubResource("AtlasTexture_03y0v")
+script = ExtResource("2_7od8l")

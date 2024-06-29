@@ -12,6 +12,8 @@ var isSinglePlayer: bool = false
 
 @export var player_scene: PackedScene
 @export var random_seed: int
+@export var menu_coins_container: Control
+@export var menu_coins_scene: PackedScene = load("res://assets/items/menu_coin_sprite.tscn")
 
 @export var sound_on = true
 
@@ -263,3 +265,11 @@ func _on_multiplayer_spawner_spawned(player):
 			player.get_node("Camera2D").set_enabled(false)
 			print("spawned other player: ", player.playerId % 100)
 
+func update_coins(count: int):
+	var children = menu_coins_container.get_children()
+	if len(children) < count:
+		for i in range(count - len(children)):
+			menu_coins_container.add_child(menu_coins_scene.instantiate())
+	elif len(children) > count:
+		for i in range(len(children) - count):
+			menu_coins_container.remove_child(children[i])

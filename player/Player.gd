@@ -21,6 +21,7 @@ const RUNNER_PATCH_RECT = Rect2(0, 272, 48, 48)
 		
 @export var tagged = false
 @export var score = 0
+var coins = 0
 
 @export var playerName: String
 
@@ -133,3 +134,7 @@ func tag():
 @rpc("any_peer", "call_local", "reliable")
 func setName(new):
 	self.playerName = new
+
+func collect_coin(coin):
+	coins += 1
+	world.update_coins(coins)
